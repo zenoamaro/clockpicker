@@ -881,6 +881,7 @@
 	};
 	
 	ClockPicker.prototype.now = function() {
+		raiseCallback(this.options.beforeChange, this.getTime(true));
 		var date = new Date();
 		this.hours = date.getHours();
 		this.minutes = date.getMinutes();
@@ -893,6 +894,7 @@
 				this.hours -= 12;
 			}
 		}
+		raiseCallback(this.options.afterChange, this.getTime(true));
 		this.done();
 	};
 
