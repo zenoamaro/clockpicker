@@ -129,9 +129,9 @@
 		// Setup for for 12 hour clock if option is selected
 		if (options.twelvehour) {
 
-			$('<button type="button" class="' + (options.klass.amButton || 'btn btn-sm btn-default clockpicker-button am-button') + '">' + "AM" + '</button>')
+			$('<button type="button" class="' + (options.klass.amButton || 'btn btn-sm btn-default clockpicker-button am-button') + '">' + options.amtext + '</button>')
 				.on("click", function() {
-					self.amOrPm = 'AM';
+					self.amOrPm = options.amtext;
 					self.spanAmPm.empty().append(' ' + self.amOrPm);
 
 					if (options.ampmSubmit) {
@@ -142,9 +142,9 @@
 				}).appendTo(this.amPmBlock);
 				
 				
-			$('<button type="button" class="' + (options.klass.pmButton || 'btn btn-sm btn-default clockpicker-button pm-button') + '">' + "PM" + '</button>')
+			$('<button type="button" class="' + (options.klass.pmButton || 'btn btn-sm btn-default clockpicker-button pm-button') + '">' + options.pmtext + '</button>')
 				.on("click", function() {
-					self.amOrPm = 'PM';
+					self.amOrPm = options.pmtext;
 					self.spanAmPm.empty().append(' ' + self.amOrPm);
 
 					if (options.ampmSubmit) {
@@ -155,7 +155,7 @@
 				}).appendTo(this.amPmBlock);
 				
 			this.spanAmPm.on("click", function() {
-				self.amOrPm = self.amOrPm !== 'AM' ? 'AM' : 'PM';
+				self.amOrPm = self.amOrPm !== options.amtext ? options.amtext : options.pmtext;
 				self.spanAmPm.empty().append(' ' + self.amOrPm);
 			});
 		}
@@ -430,6 +430,8 @@
 		showclear: false,	// show clear button
 		shownow: false,		// show now button
 		twelvehour: false,	// change to 12 hour AM/PM clock from 24 hour
+		amtext: 'AM',		// text for AM
+		pmtext: 'PM',		// text for PM
 		vibrate: true,		// vibrate the device when dragging clock hand
 		hourstep: 1,		// allow to multi increment the hour
 		minutestep: 1,		// allow to multi increment the minute
@@ -541,7 +543,7 @@
 
 		if (this.options.twelvehour) {
 			var period = (value[1] + '').replace(/\d+/g, '').toLowerCase();
-			this.amOrPm = this.hours > 12 || period === 'pm' ? 'PM' : 'AM';
+			this.amOrPm = this.hours > 12 || (period === 'pm' || period === this.options.pmtext) ? this.options.pmtext : this.options.amtext;
 		}
 	};
 
@@ -801,7 +803,7 @@
 		}
 
 		var hours = this.hours;
-		if (this.options.twelvehour && hours < 12 && this.amOrPm === 'PM') {
+		if (this.options.twelvehour && hours < 12 && this.amOrPm === this.options.pmtext) {
 			hours += 12;
 		}
 
@@ -824,10 +826,10 @@
 				value = ':' + leadingZero(this.minutes);
 		
 			if (this.isHTML5 && this.options.twelvehour) {
-				if (this.hours < 12 && this.amOrPm === 'PM') {
+				if (this.hours < 12 && this.amOrPm === this.options.pmtext) {
 					outHours += 12;
 				}
-				if (this.hours === 12 && this.amOrPm === 'AM') {
+				if (this.hours === 12 && this.amOrPm === this.options.amtext) {
 					outHours = 0;
 				}
 			}
@@ -883,11 +885,11 @@
 		this.hours = date.getHours();
 		this.minutes = date.getMinutes();
 		if (this.options.twelvehour) {
-			this.amOrPm === 'AM';
+			this.amOrPm === this.options.amtext;
 			if(this.hours === 0) {
 				this.hours = 12;
 			} else if(this.hours > 12) {
-				this.amOrPm = 'PM';
+				this.amOrPm = this.options.pmtext;
 				this.hours -= 12;
 			}
 		}
