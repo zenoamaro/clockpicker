@@ -131,8 +131,15 @@
 
 			$('<button type="button" class="' + (options.klass.amButton || 'btn btn-sm btn-default clockpicker-button am-button') + '">' + options.amtext + '</button>')
 				.on("click", function() {
+					var changed = self.amOrPm !== options.amtext;
+					if (changed) {
+						raiseCallback(options.beforeChange, self.getTime(true));
+					}
 					self.amOrPm = options.amtext;
 					self.spanAmPm.empty().append(' ' + self.amOrPm);
+					if (changed) {
+						raiseCallback(options.afterChange, self.getTime(true));
+					}
 
 					if (options.ampmSubmit) {
 						setTimeout(function(){
@@ -144,8 +151,15 @@
 				
 			$('<button type="button" class="' + (options.klass.pmButton || 'btn btn-sm btn-default clockpicker-button pm-button') + '">' + options.pmtext + '</button>')
 				.on("click", function() {
+					var changed = self.amOrPm !== options.pmtext;
+					if (changed) {
+						raiseCallback(options.beforeChange, self.getTime(true));
+					}
 					self.amOrPm = options.pmtext;
 					self.spanAmPm.empty().append(' ' + self.amOrPm);
+					if (changed) {
+						raiseCallback(options.afterChange, self.getTime(true));
+					}
 
 					if (options.ampmSubmit) {
 						setTimeout(function(){
@@ -155,8 +169,10 @@
 				}).appendTo(this.amPmBlock);
 				
 			this.spanAmPm.on("click", function() {
+				raiseCallback(options.beforeChange, self.getTime(true));
 				self.amOrPm = self.amOrPm !== options.amtext ? options.amtext : options.pmtext;
 				self.spanAmPm.empty().append(' ' + self.amOrPm);
+				raiseCallback(options.afterChange, self.getTime(true));
 			});
 		}
 		
