@@ -536,13 +536,13 @@
 
 		// Minutes can have AM/PM that needs to be removed
 		this.hours = + value[0] || 0;
-		this.minutes = + (value[1] + '').replace(/\D/g, '') || 0;
+		this.minutes = + (value[1] + '').replace(/[\D\s]/g, '') || 0;
 
 		this.hours = Math.round(this.hours / this.options.hourstep) * this.options.hourstep;
 		this.minutes = Math.round(this.minutes / this.options.minutestep) * this.options.minutestep;
 
 		if (this.options.twelvehour) {
-			var period = (value[1] + '').replace(/\d+/g, '').toLowerCase();
+			var period = (value[1] + '').replace(/[\d\s]/g, '').toLowerCase();
 			this.amOrPm = this.hours > 12 || (period === 'pm' || period === this.options.pmtext) ? this.options.pmtext : this.options.amtext;
 		}
 	};
@@ -837,7 +837,7 @@
 			value = leadingZero(outHours) + value;
 		
 			if (!this.isHTML5 && this.options.twelvehour) {
-				value = value + this.amOrPm;
+				value = value + ' ' + this.amOrPm;
 			}
 		
 			this.input.prop('value', value);
