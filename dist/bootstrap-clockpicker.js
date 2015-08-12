@@ -559,7 +559,12 @@
 
 		if (this.options.twelvehour) {
 			var period = (value[1] + '').replace(/[\d\s]/g, '').toLowerCase();
-			this.amOrPm = this.hours > 12 || (period === 'pm' || period === this.options.pmtext) ? this.options.pmtext : this.options.amtext;
+			this.amOrPm = this.hours > 12 || period === 'pm' || period === this.options.pmtext ? this.options.pmtext : this.options.amtext;
+			if (this.hours > 12) {
+				this.hours -= 12;
+			} else if (this.hours === 0) {
+				this.hours = 12;
+			}
 		}
 	};
 
@@ -819,8 +824,12 @@
 		}
 
 		var hours = this.hours;
-		if (this.options.twelvehour && hours < 12 && this.amOrPm === this.options.pmtext) {
-			hours += 12;
+		if (this.options.twelvehour) {
+			if (hours < 12 && this.amOrPm === this.options.pmtext) {
+				hours += 12;
+			} else if (hours >= 12 && this.amOrPm === this.options.amtext) {
+				hours -= 12;
+			}
 		}
 
 		var selectedTime = new Date();
@@ -845,8 +854,8 @@
 				if (this.hours < 12 && this.amOrPm === this.options.pmtext) {
 					outHours += 12;
 				}
-				if (this.hours === 12 && this.amOrPm === this.options.amtext) {
-					outHours = 0;
+				if (this.hours >= 12 && this.amOrPm === this.options.amtext) {
+					outHours -= 12;
 				}
 			}
 		
