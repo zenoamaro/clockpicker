@@ -83,6 +83,8 @@
 				'<span class="clockpicker-am-pm-block">',
 				'</span>',
 			'</div>',
+			'<div class="popover-footer">',
+			'</div>',
 		'</div>'
 	].join('');
 
@@ -93,6 +95,7 @@
 			hoursView = popover.find('.clockpicker-hours'),
 			minutesView = popover.find('.clockpicker-minutes'),
 			amPmBlock = popover.find('.clockpicker-am-pm-block'),
+			popoverFooter = popover.find('.popover-footer'),
 			isInput = element.prop('tagName') === 'INPUT',
 			input = isInput ? element : element.find('input'),
 			isHTML5 = input.prop('type') === 'time',
@@ -153,11 +156,21 @@
 				
 		}
 		
+		if (options.shownow) {
+			$('<button type="button" class="btn btn-sm btn-default btn-block clockpicker-button">' + options.nowtext + '</button>')
+				.click($.proxy(this.now, this))
+				.appendTo(popoverFooter);
+		}
+		if (options.showclear) {
+			$('<button type="button" class="btn btn-sm btn-default btn-block clockpicker-button">' + options.cleartext + '</button>')
+				.click($.proxy(this.clear, this))
+				.appendTo(popoverFooter);
+		}
 		if (! options.autoclose) {
 			// If autoclose is not setted, append a button
 			$('<button type="button" class="btn btn-sm btn-default btn-block clockpicker-button">' + options.donetext + '</button>')
 				.click($.proxy(this.done, this))
-				.appendTo(popover);
+				.appendTo(popoverFooter);
 		}
 
 		// Placement and arrow align - make sure they make sense.
@@ -406,8 +419,12 @@
 		fromnow: 0,		// set default time to * milliseconds from now (using with default = 'now')
 		placement: 'bottom',	// clock popover placement
 		align: 'left',		// popover arrow align
-		donetext: '完成',	// done button text
+		donetext: 'Done',	// done button text
+		cleartext: 'Clear',	// clear button text
+		nowtext: 'Now',		// now button text
 		autoclose: false,	// auto close when minute is selected
+		showclear: false,	// show clear button
+		shownow: false,		// show now button
 		twelvehour: false,	// change to 12 hour AM/PM clock from 24 hour
 		vibrate: true,		// vibrate the device when dragging clock hand
 		hourstep: 1,		// allow to multi increment the hour
@@ -818,6 +835,43 @@
 		}
 
 		raiseCallback(this.options.afterDone);
+	};
+	
+	ClockPicker.prototype.clear = function() {
+		raiseCallback(this.options.beforeClear);
+		this.hide();
+		var last = this.input.prop('value'),
+			value = null;
+		
+		this.input.prop('value', value);
+		if (value !== last) {
+			this.input.triggerHandler('change');
+			if (! this.isInput) {
+				this.element.trigger('change');
+			}
+		}
+
+		if (this.options.autoclose) {
+			this.input.trigger('blur');
+		}
+
+		raiseCallback(this.options.afterClear);
+	};
+	
+	ClockPicker.prototype.now = function() {
+		var date = new Date();
+		this.hours = date.getHours();
+		this.minutes = date.getMinutes();
+		if (this.options.twelvehour) {
+			this.amOrPm === 'AM';
+			if(this.hours === 0) {
+				this.hours = 12;
+			} else if(this.hours > 12) {
+				this.amOrPm = 'PM';
+				this.hours -= 12;
+			}
+		}
+		this.done();
 	};
 
 	// Remove clockpicker from input
