@@ -287,9 +287,7 @@
 				var isTouch = /^touch/.test(e.type),
 					x = (isTouch ? e.originalEvent.changedTouches[0] : e).pageX - x0,
 					y = (isTouch ? e.originalEvent.changedTouches[0] : e).pageY - y0;
-				if ((space || moved) && x === dx && y === dy) {
-					self.setHand(x, y);
-				}
+				self.setHand(x, y);
 				if (self.currentView === 'hours') {
 					self.toggleView('minutes', duration / 2);
 				} else {
