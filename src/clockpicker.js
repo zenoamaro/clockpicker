@@ -430,7 +430,8 @@
 		hourstep: 1,		// allow to multi increment the hour
 		minutestep: 1,		// allow to multi increment the minute
 		ampmSubmit: false,	// allow submit with AM and PM buttons instead of the minute selection/picker
-		addonOnly: false	// only open on clicking on the input-addon
+		addonOnly: false,	// only open on clicking on the input-addon
+		setInput: true		// set the input value when done
 	};
 
 	// Show or hide popover
@@ -810,30 +811,33 @@
 	ClockPicker.prototype.done = function() {
 		raiseCallback(this.options.beforeDone);
 		this.hide();
-		var last = this.input.prop('value'),
-			outHours = this.hours,
-			value = ':' + leadingZero(this.minutes);
 		
-		if (this.isHTML5 && this.options.twelvehour) {
-			if (this.hours < 12 && this.amOrPm === 'PM') {
-				outHours += 12;
+		if(this.options.setInput) {
+			var last = this.input.prop('value'),
+				outHours = this.hours,
+				value = ':' + leadingZero(this.minutes);
+		
+			if (this.isHTML5 && this.options.twelvehour) {
+				if (this.hours < 12 && this.amOrPm === 'PM') {
+					outHours += 12;
+				}
+				if (this.hours === 12 && this.amOrPm === 'AM') {
+					outHours = 0;
+				}
 			}
-			if (this.hours === 12 && this.amOrPm === 'AM') {
-				outHours = 0;
+		
+			value = leadingZero(outHours) + value;
+		
+			if (!this.isHTML5 && this.options.twelvehour) {
+				value = value + this.amOrPm;
 			}
-		}
 		
-		value = leadingZero(outHours) + value;
-		
-		if (!this.isHTML5 && this.options.twelvehour) {
-			value = value + this.amOrPm;
-		}
-		
-		this.input.prop('value', value);
-		if (value !== last) {
-			this.input.triggerHandler('change');
-			if (! this.isInput) {
-				this.element.trigger('change');
+			this.input.prop('value', value);
+			if (value !== last) {
+				this.input.triggerHandler('change');
+				if (! this.isInput) {
+					this.element.trigger('change');
+				}
 			}
 		}
 
@@ -847,14 +851,17 @@
 	ClockPicker.prototype.clear = function() {
 		raiseCallback(this.options.beforeClear);
 		this.hide();
-		var last = this.input.prop('value'),
-			value = null;
 		
-		this.input.prop('value', value);
-		if (value !== last) {
-			this.input.triggerHandler('change');
-			if (! this.isInput) {
-				this.element.trigger('change');
+		if(this.options.setInput) {
+			var last = this.input.prop('value'),
+				value = null;
+		
+			this.input.prop('value', value);
+			if (value !== last) {
+				this.input.triggerHandler('change');
+				if (! this.isInput) {
+					this.element.trigger('change');
+				}
 			}
 		}
 
