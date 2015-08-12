@@ -131,8 +131,8 @@
 
 			$('<button type="button" class="' + (options.klass.amButton || 'btn btn-sm btn-default clockpicker-button am-button') + '">' + "AM" + '</button>')
 				.on("click", function() {
-					self.amOrPm = "AM";
-					$('.clockpicker-span-am-pm').empty().append('AM');
+					self.amOrPm = 'AM';
+					self.spanAmPm.empty().append(' ' + self.amOrPm);
 
 					if (options.ampmSubmit) {
 						setTimeout(function(){
@@ -145,7 +145,7 @@
 			$('<button type="button" class="' + (options.klass.pmButton || 'btn btn-sm btn-default clockpicker-button pm-button') + '">' + "PM" + '</button>')
 				.on("click", function() {
 					self.amOrPm = 'PM';
-					$('.clockpicker-span-am-pm').empty().append('PM');
+					self.spanAmPm.empty().append(' ' + self.amOrPm);
 
 					if (options.ampmSubmit) {
 						setTimeout(function(){
@@ -154,6 +154,10 @@
 					}
 				}).appendTo(this.amPmBlock);
 				
+			this.spanAmPm.on("click", function() {
+				self.amOrPm = self.amOrPm !== 'AM' ? 'AM' : 'PM';
+				self.spanAmPm.empty().append(' ' + self.amOrPm);
+			});
 		}
 		
 		if (options.shownow) {
@@ -574,7 +578,7 @@
 		this.spanMinutes.html(leadingZero(this.minutes));
 		
 		if (this.options.twelvehour) {
-			this.spanAmPm.empty().append(this.amOrPm);
+			this.spanAmPm.empty().append(' ' + this.amOrPm);
 		}
 
 		// Toggle to hours view
