@@ -457,11 +457,11 @@ $('.clockpicker-with-callbacks').clockpicker({
 		afterClear: function() {
 			console.log("after clear");
 		},
-		beforeChange: function() {
-			console.log("before change");
+		beforeChange: function(time) {
+			console.log("before change: " + time);
 		},
-		afterChange: function() {
-			console.log("after change");
+		afterChange: function(time) {
+			console.log("after change: " + time);
 		}
 	})
 	.find('input').change(function(){

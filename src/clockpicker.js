@@ -365,9 +365,9 @@
 		raiseCallback(this.options.init);
 	}
 
-	function raiseCallback(callbackFunction) {
+	function raiseCallback(callbackFunction, argument) {
 		if (callbackFunction && typeof callbackFunction === "function") {
-			callbackFunction();
+			callbackFunction(argument);
 		}
 	}
 
@@ -741,7 +741,7 @@
 
 		var lastValue = this[this.currentView];
 		if (lastValue !== value) {
-			raiseCallback(options.beforeChange);
+			raiseCallback(options.beforeChange, this.getTime(true));
 		}
 		this[this.currentView] = value;
 		this[isHours ? 'spanHours' : 'spanMinutes'].html(leadingZero(value));
@@ -778,13 +778,20 @@
 		this.fg.setAttribute('cy', cy);
 		
 		if (lastValue !== value) {
-			raiseCallback(options.afterChange);
+			raiseCallback(options.afterChange, this.getTime(true));
 		}
 	};
 
 	// Allow user to get time time as Date object
-	ClockPicker.prototype.getTime = function(callback) {
-		this.parseInputValue();
+	ClockPicker.prototype.getTime = function(current, callback) {
+		if(typeof current === "function") {
+			callback = current;
+			current = false;
+		}
+		
+		if(!current) {
+			this.parseInputValue();
+		}
 
 		var hours = this.hours;
 		if (this.options.twelvehour && hours < 12 && this.amOrPm === 'PM') {
