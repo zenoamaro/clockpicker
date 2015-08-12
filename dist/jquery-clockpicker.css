@@ -296,6 +296,9 @@
 	margin: 0;
 	padding: 10px 0;
 }
+.clockpicker-button+.clockpicker-button {
+	margin: 0;
+}
 .clockpicker-button:hover {
 	background-image: none;
 	background-color: #ebebeb;
