@@ -129,7 +129,7 @@
 		// Setup for for 12 hour clock if option is selected
 		if (options.twelvehour) {
 
-			$('<button type="button" class="btn btn-sm btn-default clockpicker-button am-button">' + "AM" + '</button>')
+			$('<button type="button" class="' + (options.klass.amButton || 'btn btn-sm btn-default clockpicker-button am-button') + '">' + "AM" + '</button>')
 				.on("click", function() {
 					self.amOrPm = "AM";
 					$('.clockpicker-span-am-pm').empty().append('AM');
@@ -142,7 +142,7 @@
 				}).appendTo(this.amPmBlock);
 				
 				
-			$('<button type="button" class="btn btn-sm btn-default clockpicker-button pm-button">' + "PM" + '</button>')
+			$('<button type="button" class="' + (options.klass.pmButton || 'btn btn-sm btn-default clockpicker-button pm-button') + '">' + "PM" + '</button>')
 				.on("click", function() {
 					self.amOrPm = 'PM';
 					$('.clockpicker-span-am-pm').empty().append('PM');
@@ -157,18 +157,18 @@
 		}
 		
 		if (options.shownow) {
-			$('<button type="button" class="btn btn-sm btn-default btn-block clockpicker-button">' + options.nowtext + '</button>')
+			$('<button type="button" class="' + (options.klass.nowButton || 'btn btn-sm btn-default btn-block clockpicker-button') + '">' + options.nowtext + '</button>')
 				.click($.proxy(this.now, this))
 				.appendTo(popoverFooter);
 		}
 		if (options.showclear) {
-			$('<button type="button" class="btn btn-sm btn-default btn-block clockpicker-button">' + options.cleartext + '</button>')
+			$('<button type="button" class="' + (options.klass.clearButton || 'btn btn-sm btn-default btn-block clockpicker-button') + '">' + options.cleartext + '</button>')
 				.click($.proxy(this.clear, this))
 				.appendTo(popoverFooter);
 		}
 		if (! options.autoclose) {
 			// If autoclose is not setted, append a button
-			$('<button type="button" class="btn btn-sm btn-default btn-block clockpicker-button">' + options.donetext + '</button>')
+			$('<button type="button" class="' + (options.klass.doneButton || 'btn btn-sm btn-default btn-block clockpicker-button') + '">' + options.donetext + '</button>')
 				.click($.proxy(this.done, this))
 				.appendTo(popoverFooter);
 		}
@@ -431,7 +431,9 @@
 		minutestep: 1,		// allow to multi increment the minute
 		ampmSubmit: false,	// allow submit with AM and PM buttons instead of the minute selection/picker
 		addonOnly: false,	// only open on clicking on the input-addon
-		setInput: true		// set the input value when done
+		setInput: true,		// set the input value when done
+		klass: {
+		}
 	};
 
 	// Show or hide popover
