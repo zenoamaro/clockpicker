@@ -722,6 +722,10 @@
 			}
 		}
 
+		var lastValue = this[this.currentView];
+		if (lastValue !== value) {
+			raiseCallback(options.beforeChange);
+		}
 		this[this.currentView] = value;
 		this[isHours ? 'spanHours' : 'spanMinutes'].html(leadingZero(value));
 
@@ -755,6 +759,10 @@
 		this.bg.setAttribute('cy', cy);
 		this.fg.setAttribute('cx', cx);
 		this.fg.setAttribute('cy', cy);
+		
+		if (lastValue !== value) {
+			raiseCallback(options.afterChange);
+		}
 	};
 
 	// Allow user to get time time as Date object

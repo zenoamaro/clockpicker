@@ -225,6 +225,12 @@ $('#check-minutes').click(function(e){
 						},
 						afterDone: function() {
 							console.log("after done");
+						},
+						beforeChange: function() {
+							console.log("before change");
+						},
+						afterChange: function() {
+							console.log("after change");
 						}
 				});
 
@@ -438,6 +444,12 @@ $('.clockpicker-with-callbacks').clockpicker({
 		},
 		afterDone: function() {
 			console.log("after done");
+		},
+		beforeChange: function() {
+			console.log("before change");
+		},
+		afterChange: function() {
+			console.log("after change");
 		}
 	})
 	.find('input').change(function(){
