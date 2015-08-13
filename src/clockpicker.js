@@ -8,6 +8,7 @@
 	var $ = window.jQuery,
 		$win = $(window),
 		$doc = $(document),
+		$html = $(document.documentElement),
 		$body;
 
 	// Can I use inline svg ?
@@ -30,6 +31,36 @@
 			'msTransition' in style ||
 			'OTransition' in style;
 	})();
+	
+	/**
+	 * Get the width of the browser’s scrollbar.
+	 * Taken from: https://github.com/VodkaBears/Remodal/blob/master/src/jquery.remodal.js
+	 */
+	function getScrollbarWidth() {
+		if ($html.height() <= $win.height()) {
+			return 0;
+		}
+
+		var $outer = $('<div style="visibility:hidden;width:100px" />').appendTo('body');
+
+		// Get the width without scrollbars.
+		var widthWithoutScroll = $outer[0].offsetWidth;
+
+		// Force adding scrollbars.
+		$outer.css('overflow', 'scroll');
+
+		// Add the inner div.
+		var $inner = $('<div style="width:100%" />').appendTo($outer);
+
+		// Get the width with scrollbars.
+		var widthWithScroll = $inner[0].offsetWidth;
+
+		// Remove the divs.
+		$outer.remove();
+
+		// Return the difference between the widths.
+		return widthWithoutScroll - widthWithScroll;
+	}
 
 	// Listen touch events in touch screen device, instead of mouse events in desktop.
 	var touchSupported = 'ontouchstart' in window,
@@ -467,6 +498,7 @@
 		setInput: true,		// set the input value when done
 		showBlank: false,	// show a blank clock for blank input
 		blankTitle: '',		// text to show in the title when hours/minutes are both blank
+		preventScroll:false,// prevent scrolling while popup is open
 		klass: {			// custom classes for elements
 			amButton: null,
 			pmButton: null,
@@ -652,6 +684,11 @@
 		this.locate();
 
 		this.isShown = true;
+		
+		//disable body scrolling
+		if (this.options.preventScroll) {
+			$html.css('overflow', 'hidden').css('padding-right', '+=' + getScrollbarWidth());
+		}
 
 		// Hide when clicking or tabbing on any element except the clock, input and addon
 		$doc.on('click.clockpicker.' + this.id + ' focusin.clockpicker.' + this.id, function(e){
@@ -678,6 +715,11 @@
 		raiseCallback(this.options.beforeHide);
 
 		this.isShown = false;
+		
+		//enable body scrolling
+		if (this.options.preventScroll) {
+			$html.css('overflow', '').css('padding-right', '-=' + getScrollbarWidth());
+		}
 
 		// Unbinding events on document
 		$doc.off('click.clockpicker.' + this.id + ' focusin.clockpicker.' + this.id);
