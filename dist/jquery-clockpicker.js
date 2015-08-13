@@ -550,21 +550,40 @@
 
 		value = value.split(':');
 
-		// Minutes can have AM/PM that needs to be removed
-		this.hours = + value[0] || 0;
-		this.minutes = + (value[1] + '').replace(/[\D\s]/g, '') || 0;
+		// Remove all non digits and whitespace
+		this.hours = + (value[0] + '').replace(/[\D\s]/g, '');
+		this.minutes = + (value[1] + '').replace(/[\D\s]/g, '');
 
-		this.hours = Math.round(this.hours / this.options.hourstep) * this.options.hourstep;
-		this.minutes = Math.round(this.minutes / this.options.minutestep) * this.options.minutestep;
-
-		if (this.options.twelvehour) {
+		if (this.minutes) {
+			this.minutes = Math.round(this.minutes / this.options.minutestep) * this.options.minutestep;
+		}
+		if (this.hours) {
+			this.hours = Math.round(this.hours / this.options.hourstep) * this.options.hourstep;
+			
 			var period = (value[1] + '').replace(/[\d\s]/g, '').toLowerCase();
-			this.amOrPm = this.hours > 12 || period === 'pm' || period === this.options.pmtext ? this.options.pmtext : this.options.amtext;
-			if (this.hours > 12) {
-				this.hours -= 12;
-			} else if (this.hours === 0) {
-				this.hours = 12;
+			var periodIsAm = period === 'am' || period === this.options.amtext.toLowerCase();
+			var periodIsPm = period === 'pm' || period === this.options.pmtext.toLowerCase();
+			this.amOrPm = periodIsPm ? this.options.pmtext : periodIsAm ? this.options.amtext : '';
+			
+			if (this.options.twelvehour) {
+				//ensure amOrPm has value
+				if(!this.amOrPm) {
+					this.amOrPm = this.hours >= 12 ? this.options.pmtext : this.options.amtext;
+				}
+				if (this.hours > 12) {
+					this.hours -= 12;
+				} else if (this.hours === 0) {
+					this.hours = 12;
+				}
+			} else {
+				if (this.hours < 12 && periodIsPm) {
+					this.hours += 12;
+				} else if (this.hours >= 12 && periodIsAm) {
+					this.hours -= 12;
+				}
 			}
+		} else {
+			this.amOrPm = this.options.pmtext;
 		}
 	};
 
