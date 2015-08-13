@@ -116,14 +116,14 @@ $('.clockpicker').clockpicker();
 	<div class="form-group">
 		<h4>Place at left, align the arrow to top, auto close:</h4>
 		<div class="clearfix">
-			<div class="input-group clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true">
+			<div class="input-group clockpicker pull-center" data-placement="left" data-align="top" data-auto-close="true">
 				<input type="text" class="form-control" value="13:14">
 				<span class="input-group-addon">
 					<span class="glyphicon glyphicon-time"></span>
 				</span>
 			</div>
 		</div>
-		<pre class="hljs-pre"><code class="html">&lt;div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true"&gt;
+		<pre class="hljs-pre"><code class="html">&lt;div class="input-group clockpicker" data-placement="left" data-align="top" data-auto-close="true"&gt;
 	&lt;input type="text" class="form-control" value="13:14"&gt;
 	&lt;span class="input-group-addon"&gt;
 		&lt;span class="glyphicon glyphicon-time"&gt;&lt;/span&gt;
@@ -135,7 +135,7 @@ $('.clockpicker').clockpicker();
 	</div>
 	<div class="form-group">
 		<h4>Set options in javascript, instead of <code>data-*</code> :</h4>
-		<div class="input-group clockpicker" data-placement="top" data-align="left" data-donetext="Done">
+		<div class="input-group clockpicker" data-placement="top" data-align="left" data-done-text="Done">
 			<input type="text" class="form-control" value="18:00">
 			<span class="input-group-addon">
 				<span class="glyphicon glyphicon-time"></span>
@@ -199,7 +199,7 @@ $('#check-minutes').click(function(e){
 				&lt;script type="text/javascript"&gt;
 				var input = $('.clockpicker-with-callbacks').clockpicker({
 					doneText: 'Done',
-						init: function() { 
+						init: function() {
 							console.log("colorpicker initiated");
 						},
 						beforeShow: function() {
@@ -401,7 +401,7 @@ $('#check-minutes').click(function(e){
 <div class="container">
 	<div class="footer">
 		<p>
-			&copy; Wang Shenwei. 
+			&copy; Wang Shenwei.
 			<a href="https://github.com/weareoutman/clockpicker">Fork me on GitHub</a>
 		</p>
 	</div>
@@ -424,7 +424,7 @@ var input = $('#single-input').clockpicker({
 
 $('.clockpicker-with-callbacks').clockpicker({
 		doneText: 'Done',
-		init: function() { 
+		init: function() {
 			console.log("colorpicker initiated");
 		},
 		beforeShow: function() {

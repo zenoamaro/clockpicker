@@ -31,7 +31,7 @@
 			'msTransition' in style ||
 			'OTransition' in style;
 	})();
-	
+
 	/**
 	 * Get the width of the browser’s scrollbar.
 	 * Taken from: https://github.com/VodkaBears/Remodal/blob/master/src/jquery.remodal.js
@@ -165,7 +165,7 @@
 		this.spanAmPm = popover.find('.clockpicker-span-am-pm');
 		this.amOrPm = "";
 		this.currentPlacementClass = options.placement;
-		
+
 		spanBlank.html(options.blankTitle);
 
 		// Setup for for 12 hour clock if option is selected
@@ -189,8 +189,8 @@
 						}, duration / 2);
 					}
 				}).appendTo(this.amPmBlock);
-				
-				
+
+
 			$('<button type="button" class="' + (options.klass.pmButton || 'btn btn-sm btn-default clockpicker-button pm-button') + '">' + options.pmText + '</button>')
 				.on("click", function() {
 					var changed = self.amOrPm !== options.pmText;
@@ -209,7 +209,7 @@
 						}, duration / 2);
 					}
 				}).appendTo(this.amPmBlock);
-				
+
 			this.spanAmPm.on("click", function() {
 				raiseCallback(options.beforeChange, self.getTime(true));
 				self.amOrPm = self.amOrPm !== options.amText ? options.amText : options.pmText;
@@ -217,7 +217,7 @@
 				raiseCallback(options.afterChange, self.getTime(true));
 			});
 		}
-		
+
 		if (options.showNow) {
 			$('<button type="button" class="' + (options.klass.nowButton || 'btn btn-sm btn-default btn-block clockpicker-button') + '">' + options.nowText + '</button>')
 				.click($.proxy(this.now, this))
@@ -613,12 +613,12 @@
 		}
 		if (this.hours) {
 			this.hours = Math.round(this.hours / this.options.hourStep) * this.options.hourStep;
-			
+
 			var period = (value[1] + '').replace(/[\d\s]/g, '').toLowerCase();
 			var periodIsAm = period === 'am' || period === this.options.amText.toLowerCase();
 			var periodIsPm = period === 'pm' || period === this.options.pmText.toLowerCase();
 			this.amOrPm = periodIsPm ? this.options.pmText : periodIsAm ? this.options.amText : '';
-			
+
 			if (this.options.twelveHour) {
 				//ensure amOrPm has value
 				if(!this.amOrPm) {
@@ -666,13 +666,13 @@
 
 			this.isAppended = true;
 		}
-		
+
 		// Get the time from the input field
 		this.parseInputValue();
-		
+
 		this.spanHours.html(this.options.showBlank && this.hoursBlank ? '__' : leadingZero(this.hours));
 		this.spanMinutes.html(this.options.showBlank && this.minutesBlank ? '__' : leadingZero(this.minutes));
-		
+
 		if (this.options.twelveHour) {
 			this.spanAmPm.empty().append(' ' + this.amOrPm);
 		}
@@ -684,7 +684,7 @@
 		this.locate();
 
 		this.isShown = true;
-		
+
 		//disable body scrolling
 		if (this.options.preventScroll) {
 			$html.css('overflow', 'hidden').css('padding-right', '+=' + getScrollbarWidth());
@@ -715,7 +715,7 @@
 		raiseCallback(this.options.beforeHide);
 
 		this.isShown = false;
-		
+
 		//enable body scrolling
 		if (this.options.preventScroll) {
 			$html.css('overflow', '').css('padding-right', '-=' + getScrollbarWidth());
@@ -860,7 +860,7 @@
 		}
 		var isBlank = options.showBlank && this[this.currentView + 'Blank'];
 		this[isHours ? 'spanHours' : 'spanMinutes'].html(isBlank ? '__' : leadingZero(value));
-		
+
 		var useBlankTitleClass = isBlank && !!options.blankTitle && this[(isHours ? 'minutesBlank' : 'hoursBlank')];
 		this.popoverTitle.toggleClass('blank', useBlankTitleClass);
 
@@ -894,9 +894,9 @@
 		this.bg.setAttribute('cy', cy);
 		this.fg.setAttribute('cx', cx);
 		this.fg.setAttribute('cy', cy);
-		
+
 		this.canvas.toggle(!isBlank);
-		
+
 		if (setValue && lastValue !== value) {
 			raiseCallback(options.afterChange, this.getTime(true));
 		}
@@ -908,7 +908,7 @@
 			callback = current;
 			current = false;
 		}
-		
+
 		if(!current) {
 			this.parseInputValue();
 		}
@@ -934,12 +934,12 @@
 	ClockPicker.prototype.done = function() {
 		raiseCallback(this.options.beforeDone);
 		this.hide();
-		
+
 		if(this.options.setInput) {
 			var last = this.input.prop('value'),
 				outHours = this.hours,
 				value = ':' + leadingZero(this.minutes);
-		
+
 			if (this.isHTML5 && this.options.twelveHour) {
 				if (this.hours < 12 && this.amOrPm === this.options.pmText) {
 					outHours += 12;
@@ -948,13 +948,13 @@
 					outHours -= 12;
 				}
 			}
-		
+
 			value = leadingZero(outHours) + value;
-		
+
 			if (!this.isHTML5 && this.options.twelveHour) {
 				value = value + ' ' + this.amOrPm;
 			}
-		
+
 			this.input.prop('value', value);
 			if (value !== last) {
 				this.input.triggerHandler('change');
@@ -970,15 +970,15 @@
 
 		raiseCallback(this.options.afterDone);
 	};
-	
+
 	ClockPicker.prototype.clear = function() {
 		raiseCallback(this.options.beforeClear);
 		this.hide();
-		
+
 		if(this.options.setInput) {
 			var last = this.input.prop('value'),
 				value = null;
-		
+
 			this.input.prop('value', value);
 			if (value !== last) {
 				this.input.triggerHandler('change');
@@ -994,7 +994,7 @@
 
 		raiseCallback(this.options.afterClear);
 	};
-	
+
 	ClockPicker.prototype.now = function() {
 		raiseCallback(this.options.beforeChange, this.getTime(true));
 		var date = new Date();
