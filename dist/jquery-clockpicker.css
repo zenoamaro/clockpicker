@@ -234,8 +234,15 @@
 	line-height: 30px;
 	text-align: center;
 }
-.clockpicker-popover .popover-title span {
+.clockpicker-popover .popover-title span.cursor-pointer {
 	cursor: pointer;
+}
+.clockpicker-popover .popover-title.blank span,
+.clockpicker-popover .popover-title span.clockpicker-span-blank {
+	display: none;
+}
+.clockpicker-popover .popover-title.blank span.clockpicker-span-blank {
+	display: inline;
 }
 .clockpicker-popover .popover-content {
 	background-color: #f8f8f8;

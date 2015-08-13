@@ -69,10 +69,11 @@
 		'<div class="popover clockpicker-popover">',
 			'<div class="arrow"></div>',
 			'<div class="popover-title">',
-				'<span class="clockpicker-span-hours text-primary"></span>',
-				' : ',
-				'<span class="clockpicker-span-minutes"></span>',
-				'<span class="clockpicker-span-am-pm"></span>',
+				'<span class="clockpicker-span-blank"></span>',
+				'<span class="clockpicker-span-hours cursor-pointer text-primary"></span>',
+				'<span class="clockpicker-span-separator"> : </span>',
+				'<span class="clockpicker-span-minutes cursor-pointer"></span>',
+				'<span class="clockpicker-span-am-pm cursor-pointer"></span>',
 			'</div>',
 			'<div class="popover-content">',
 				'<div class="clockpicker-plate">',
@@ -96,6 +97,7 @@
 			minutesView = popover.find('.clockpicker-minutes'),
 			amPmBlock = popover.find('.clockpicker-am-pm-block'),
 			popoverFooter = popover.find('.popover-footer'),
+			spanBlank = popover.find('.clockpicker-span-blank'),
 			isInput = element.prop('tagName') === 'INPUT',
 			input = isInput ? element : element.find('input'),
 			isHTML5 = input.prop('type') === 'time',
@@ -116,6 +118,7 @@
 		this.input = input;
 		this.addon = addon;
 		this.popover = popover;
+		this.popoverTitle = popover.find('.popover-title');
 		this.plate = plate;
 		this.hoursView = hoursView;
 		this.minutesView = minutesView;
@@ -125,6 +128,8 @@
 		this.spanAmPm = popover.find('.clockpicker-span-am-pm');
 		this.amOrPm = "";
 		this.currentPlacementClass = options.placement;
+		
+		spanBlank.html(options.blankTitle);
 
 		// Setup for for 12 hour clock if option is selected
 		if (options.twelvehour) {
@@ -455,6 +460,7 @@
 		addonOnly: false,	// only open on clicking on the input-addon
 		setInput: true,		// set the input value when done
 		showBlank: false,	// show a blank clock for blank input
+		blankTitle: '',		// text to show in the title when hours/minutes are both blank
 		klass: {
 		}
 	};
@@ -801,6 +807,9 @@
 		}
 		var isBlank = options.showBlank && this[this.currentView + 'Blank'];
 		this[isHours ? 'spanHours' : 'spanMinutes'].html(isBlank ? '__' : leadingZero(value));
+		
+		var useBlankTitleClass = isBlank && !!options.blankTitle && this[(isHours ? 'minutesBlank' : 'hoursBlank')];
+		this.popoverTitle.toggleClass('blank', useBlankTitleClass);
 
 		// If svg is not supported, just add an active class to the tick
 		if (!svgSupported && !isBlank) {
