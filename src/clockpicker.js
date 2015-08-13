@@ -441,8 +441,8 @@
 	// Default options
 	ClockPicker.DEFAULTS = {
 		'default': '',		// default time, 'now' or '13:14' e.g.
-		fromnow: 0,		// set default time to * milliseconds from now (using with default = 'now')
-		placement: 'bottom',	// clock popover placement
+		fromnow: 0,			// set default time to * milliseconds from now (using with default = 'now')
+		placement: 'bottom',// clock popover placement
 		align: 'left',		// popover arrow align
 		donetext: 'Done',	// done button text
 		cleartext: 'Clear',	// clear button text
@@ -461,7 +461,12 @@
 		setInput: true,		// set the input value when done
 		showBlank: false,	// show a blank clock for blank input
 		blankTitle: '',		// text to show in the title when hours/minutes are both blank
-		klass: {
+		klass: {			// custom classes for elements
+			amButton: null,
+			pmButton: null,
+			clearButton: null,
+			nowButton: null,
+			doneButton: null
 		}
 	};
 
