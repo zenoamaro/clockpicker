@@ -297,7 +297,7 @@
 			}
 
 			// Clock
-			self.setHand(dx, dy, true);
+			self.setHand(dx, dy, true, true);
 
 			// Mousemove on document
 			$doc.off(mousemoveEvent).on(mousemoveEvent, function(e){
@@ -310,7 +310,7 @@
 					return;
 				}
 				moved = true;
-				self.setHand(x, y, true);
+				self.setHand(x, y, true, true);
 			});
 
 			// Mouseup on document
@@ -320,7 +320,7 @@
 				var isTouch = /^touch/.test(e.type),
 					x = (isTouch ? e.originalEvent.changedTouches[0] : e).pageX - x0,
 					y = (isTouch ? e.originalEvent.changedTouches[0] : e).pageY - y0;
-				self.setHand(x, y);
+				self.setHand(x, y, false, true);
 				if (self.currentView === 'hours') {
 					self.toggleView('minutes', duration / 2);
 				} else {
@@ -454,6 +454,7 @@
 		ampmSubmit: false,	// allow submit with AM and PM buttons instead of the minute selection/picker
 		addonOnly: false,	// only open on clicking on the input-addon
 		setInput: true,		// set the input value when done
+		showBlank: false,	// show a blank clock for blank input
 		klass: {
 		}
 	};
@@ -551,8 +552,12 @@
 		value = value.split(':');
 
 		// Remove all non digits and whitespace
-		this.hours = + (value[0] + '').replace(/[\D\s]/g, '');
-		this.minutes = + (value[1] + '').replace(/[\D\s]/g, '');
+		this.hours = (value[0] + '').replace(/[\D\s]/g, '');
+		this.minutes = (value[1] + '').replace(/[\D\s]/g, '');
+		this.hoursBlank = !this.hours;
+		this.minutesBlank = !this.minutes;
+		this.hours = + this.hours;
+		this.minutes = + this.minutes;
 
 		if (this.minutes) {
 			this.minutes = Math.round(this.minutes / this.options.minutestep) * this.options.minutestep;
@@ -616,8 +621,8 @@
 		// Get the time from the input field
 		this.parseInputValue();
 		
-		this.spanHours.html(leadingZero(this.hours));
-		this.spanMinutes.html(leadingZero(this.minutes));
+		this.spanHours.html(this.options.showBlank && this.hoursBlank ? '__' : leadingZero(this.hours));
+		this.spanMinutes.html(this.options.showBlank && this.minutesBlank ? '__' : leadingZero(this.minutes));
 		
 		if (this.options.twelvehour) {
 			this.spanAmPm.empty().append(' ' + this.amOrPm);
@@ -715,15 +720,15 @@
 			self.canvas.addClass('clockpicker-canvas-out');
 			setTimeout(function(){
 				self.canvas.removeClass('clockpicker-canvas-out');
-				self.setHand(x, y);
+				self.setHand(x, y, false, false);
 			}, delay);
 		} else {
-			this.setHand(x, y);
+			this.setHand(x, y, false, false);
 		}
 	};
 
 	// Set clock hand to (x, y)
-	ClockPicker.prototype.setHand = function(x, y, dragging){
+	ClockPicker.prototype.setHand = function(x, y, dragging, setValue){
 		var radian = Math.atan2(x, - y),
 			isHours = this.currentView === 'hours',
 			z = Math.sqrt(x * x + y * y),
@@ -789,14 +794,16 @@
 		}
 
 		var lastValue = this[this.currentView];
-		if (lastValue !== value) {
+		if (setValue && lastValue !== value) {
 			raiseCallback(options.beforeChange, this.getTime(true));
+			this[this.currentView] = value;
+			this[this.currentView + 'Blank'] = false;
 		}
-		this[this.currentView] = value;
-		this[isHours ? 'spanHours' : 'spanMinutes'].html(leadingZero(value));
+		var isBlank = options.showBlank && this[this.currentView + 'Blank'];
+		this[isHours ? 'spanHours' : 'spanMinutes'].html(isBlank ? '__' : leadingZero(value));
 
 		// If svg is not supported, just add an active class to the tick
-		if (! svgSupported) {
+		if (!svgSupported && !isBlank) {
 			this[isHours ? 'hoursView' : 'minutesView'].find('.clockpicker-tick').each(function(){
 				var tick = $(this);
 				tick.toggleClass('active', value === + tick.html());
@@ -826,7 +833,9 @@
 		this.fg.setAttribute('cx', cx);
 		this.fg.setAttribute('cy', cy);
 		
-		if (lastValue !== value) {
+		this.canvas.toggle(!isBlank);
+		
+		if (setValue && lastValue !== value) {
 			raiseCallback(options.afterChange, this.getTime(true));
 		}
 	};
