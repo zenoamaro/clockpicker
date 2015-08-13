@@ -108,8 +108,8 @@
 		this.id = uniqueId('cp');
 		this.element = element;
 		this.options = options;
-		this.options.hourstep = this.parseStep(this.options.hourstep, 12);
-		this.options.minutestep = this.parseStep(this.options.minutestep, 60);
+		this.options.hourStep = this.parseStep(this.options.hourStep, 12);
+		this.options.minuteStep = this.parseStep(this.options.minuteStep, 60);
 		this.isAppended = false;
 		this.isShown = false;
 		this.currentView = 'hours';
@@ -132,15 +132,15 @@
 		spanBlank.html(options.blankTitle);
 
 		// Setup for for 12 hour clock if option is selected
-		if (options.twelvehour) {
+		if (options.twelveHour) {
 
-			$('<button type="button" class="' + (options.klass.amButton || 'btn btn-sm btn-default clockpicker-button am-button') + '">' + options.amtext + '</button>')
+			$('<button type="button" class="' + (options.klass.amButton || 'btn btn-sm btn-default clockpicker-button am-button') + '">' + options.amText + '</button>')
 				.on("click", function() {
-					var changed = self.amOrPm !== options.amtext;
+					var changed = self.amOrPm !== options.amText;
 					if (changed) {
 						raiseCallback(options.beforeChange, self.getTime(true));
 					}
-					self.amOrPm = options.amtext;
+					self.amOrPm = options.amText;
 					self.spanAmPm.empty().append(' ' + self.amOrPm);
 					if (changed) {
 						raiseCallback(options.afterChange, self.getTime(true));
@@ -154,13 +154,13 @@
 				}).appendTo(this.amPmBlock);
 				
 				
-			$('<button type="button" class="' + (options.klass.pmButton || 'btn btn-sm btn-default clockpicker-button pm-button') + '">' + options.pmtext + '</button>')
+			$('<button type="button" class="' + (options.klass.pmButton || 'btn btn-sm btn-default clockpicker-button pm-button') + '">' + options.pmText + '</button>')
 				.on("click", function() {
-					var changed = self.amOrPm !== options.pmtext;
+					var changed = self.amOrPm !== options.pmText;
 					if (changed) {
 						raiseCallback(options.beforeChange, self.getTime(true));
 					}
-					self.amOrPm = options.pmtext;
+					self.amOrPm = options.pmText;
 					self.spanAmPm.empty().append(' ' + self.amOrPm);
 					if (changed) {
 						raiseCallback(options.afterChange, self.getTime(true));
@@ -175,25 +175,25 @@
 				
 			this.spanAmPm.on("click", function() {
 				raiseCallback(options.beforeChange, self.getTime(true));
-				self.amOrPm = self.amOrPm !== options.amtext ? options.amtext : options.pmtext;
+				self.amOrPm = self.amOrPm !== options.amText ? options.amText : options.pmText;
 				self.spanAmPm.empty().append(' ' + self.amOrPm);
 				raiseCallback(options.afterChange, self.getTime(true));
 			});
 		}
 		
-		if (options.shownow) {
-			$('<button type="button" class="' + (options.klass.nowButton || 'btn btn-sm btn-default btn-block clockpicker-button') + '">' + options.nowtext + '</button>')
+		if (options.showNow) {
+			$('<button type="button" class="' + (options.klass.nowButton || 'btn btn-sm btn-default btn-block clockpicker-button') + '">' + options.nowText + '</button>')
 				.click($.proxy(this.now, this))
 				.appendTo(popoverFooter);
 		}
-		if (options.showclear) {
-			$('<button type="button" class="' + (options.klass.clearButton || 'btn btn-sm btn-default btn-block clockpicker-button') + '">' + options.cleartext + '</button>')
+		if (options.showClear) {
+			$('<button type="button" class="' + (options.klass.clearButton || 'btn btn-sm btn-default btn-block clockpicker-button') + '">' + options.clearText + '</button>')
 				.click($.proxy(this.clear, this))
 				.appendTo(popoverFooter);
 		}
-		if (! options.autoclose) {
-			// If autoclose is not setted, append a button
-			$('<button type="button" class="' + (options.klass.doneButton || 'btn btn-sm btn-default btn-block clockpicker-button') + '">' + options.donetext + '</button>')
+		if (! options.autoClose) {
+			// If autoClose is not setted, append a button
+			$('<button type="button" class="' + (options.klass.doneButton || 'btn btn-sm btn-default btn-block clockpicker-button') + '">' + options.doneText + '</button>')
 				.click($.proxy(this.done, this))
 				.appendTo(popoverFooter);
 		}
@@ -219,8 +219,8 @@
 			i, tick, radian, radius;
 
 		// Hours view
-		if (options.twelvehour) {
-			for (i = 0; i < 12; i += options.hourstep) {
+		if (options.twelveHour) {
+			for (i = 0; i < 12; i += options.hourStep) {
 				tick = tickTpl.clone();
 				radian = i / 6 * Math.PI;
 				radius = outerRadius;
@@ -234,7 +234,7 @@
 				tick.on(mousedownEvent, mousedown);
 			}
 		} else {
-			for (i = 0; i < 24; i += options.hourstep) {
+			for (i = 0; i < 24; i += options.hourStep) {
 				tick = tickTpl.clone();
 				radian = i / 6 * Math.PI;
 				var inner = i > 0 && i < 13;
@@ -253,7 +253,7 @@
 		}
 
 		// Minutes view
-		var incrementValue = Math.max(options.minutestep, 5);
+		var incrementValue = Math.max(options.minuteStep, 5);
 		for (i = 0; i < 60; i += incrementValue) {
 			tick = tickTpl.clone();
 			radian = i / 30 * Math.PI;
@@ -329,7 +329,7 @@
 				if (self.currentView === 'hours') {
 					self.toggleView('minutes', duration / 2);
 				} else {
-					if (options.autoclose) {
+					if (options.autoClose) {
 						if (!options.ampmSubmit) {
 							self.minutesView.addClass('clockpicker-dial-out');
 							setTimeout(function(){
@@ -441,21 +441,21 @@
 	// Default options
 	ClockPicker.DEFAULTS = {
 		'default': '',		// default time, 'now' or '13:14' e.g.
-		fromnow: 0,			// set default time to * milliseconds from now (using with default = 'now')
+		fromNow: 0,			// set default time to * milliseconds from now (using with default = 'now')
 		placement: 'bottom',// clock popover placement
 		align: 'left',		// popover arrow align
-		donetext: 'Done',	// done button text
-		cleartext: 'Clear',	// clear button text
-		nowtext: 'Now',		// now button text
-		autoclose: false,	// auto close when minute is selected
-		showclear: false,	// show clear button
-		shownow: false,		// show now button
-		twelvehour: false,	// change to 12 hour AM/PM clock from 24 hour
-		amtext: 'AM',		// text for AM
-		pmtext: 'PM',		// text for PM
+		doneText: 'Done',	// done button text
+		clearText: 'Clear',	// clear button text
+		nowText: 'Now',		// now button text
+		autoClose: false,	// auto close when minute is selected
+		showClear: false,	// show clear button
+		showNow: false,		// show now button
+		twelveHour: false,	// change to 12 hour AM/PM clock from 24 hour
+		amText: 'AM',		// text for AM
+		pmText: 'PM',		// text for PM
 		vibrate: true,		// vibrate the device when dragging clock hand
-		hourstep: 1,		// allow to multi increment the hour
-		minutestep: 1,		// allow to multi increment the minute
+		hourStep: 1,		// allow to multi increment the hour
+		minuteStep: 1,		// allow to multi increment the minute
 		ampmSubmit: false,	// allow submit with AM and PM buttons instead of the minute selection/picker
 		addonOnly: false,	// only open on clicking on the input-addon
 		setInput: true,		// set the input value when done
@@ -554,7 +554,7 @@
 		var value = this.input.prop('value') || this.options['default'] || '';
 
 		if (value === 'now') {
-			value = new Date(+ new Date() + this.options.fromnow);
+			value = new Date(+ new Date() + this.options.fromNow);
 		}
 		if (value instanceof Date) {
 			value = value.getHours() + ':' + value.getMinutes();
@@ -571,20 +571,20 @@
 		this.minutes = + this.minutes;
 
 		if (this.minutes) {
-			this.minutes = Math.round(this.minutes / this.options.minutestep) * this.options.minutestep;
+			this.minutes = Math.round(this.minutes / this.options.minuteStep) * this.options.minuteStep;
 		}
 		if (this.hours) {
-			this.hours = Math.round(this.hours / this.options.hourstep) * this.options.hourstep;
+			this.hours = Math.round(this.hours / this.options.hourStep) * this.options.hourStep;
 			
 			var period = (value[1] + '').replace(/[\d\s]/g, '').toLowerCase();
-			var periodIsAm = period === 'am' || period === this.options.amtext.toLowerCase();
-			var periodIsPm = period === 'pm' || period === this.options.pmtext.toLowerCase();
-			this.amOrPm = periodIsPm ? this.options.pmtext : periodIsAm ? this.options.amtext : '';
+			var periodIsAm = period === 'am' || period === this.options.amText.toLowerCase();
+			var periodIsPm = period === 'pm' || period === this.options.pmText.toLowerCase();
+			this.amOrPm = periodIsPm ? this.options.pmText : periodIsAm ? this.options.amText : '';
 			
-			if (this.options.twelvehour) {
+			if (this.options.twelveHour) {
 				//ensure amOrPm has value
 				if(!this.amOrPm) {
-					this.amOrPm = this.hours >= 12 ? this.options.pmtext : this.options.amtext;
+					this.amOrPm = this.hours >= 12 ? this.options.pmText : this.options.amText;
 				}
 				if (this.hours > 12) {
 					this.hours -= 12;
@@ -599,7 +599,7 @@
 				}
 			}
 		} else {
-			this.amOrPm = this.options.pmtext;
+			this.amOrPm = this.options.pmText;
 		}
 	};
 
@@ -635,7 +635,7 @@
 		this.spanHours.html(this.options.showBlank && this.hoursBlank ? '__' : leadingZero(this.hours));
 		this.spanMinutes.html(this.options.showBlank && this.minutesBlank ? '__' : leadingZero(this.minutes));
 		
-		if (this.options.twelvehour) {
+		if (this.options.twelveHour) {
 			this.spanAmPm.empty().append(' ' + this.amOrPm);
 		}
 
@@ -751,12 +751,12 @@
 
 		// Calculate the unit
 		if (isHours) {
-			unit = options.hourstep / 6 * Math.PI
+			unit = options.hourStep / 6 * Math.PI
 		} else {
-			unit = options.minutestep / 30 * Math.PI
+			unit = options.minuteStep / 30 * Math.PI
 		}
 
-		if (options.twelvehour) {
+		if (options.twelveHour) {
 			radius = outerRadius;
 		}
 
@@ -773,19 +773,19 @@
 
 		// Correct the hours or minutes
 		if (isHours) {
-			value *= options.hourstep;
+			value *= options.hourStep;
 
-			if (! options.twelvehour && (!inner)==(value>0)) {
+			if (! options.twelveHour && (!inner)==(value>0)) {
 				value += 12;
 			}
-			if (options.twelvehour && value === 0) {
+			if (options.twelveHour && value === 0) {
 				value = 12;
 			}
 			if (value === 24) {
 				value = 0;
 			}
 		} else {
-			value *= options.minutestep;
+			value *= options.minuteStep;
 			if (value === 60) {
 				value = 0;
 			}
@@ -866,10 +866,10 @@
 		}
 
 		var hours = this.hours;
-		if (this.options.twelvehour) {
-			if (hours < 12 && this.amOrPm === this.options.pmtext) {
+		if (this.options.twelveHour) {
+			if (hours < 12 && this.amOrPm === this.options.pmText) {
 				hours += 12;
-			} else if (hours >= 12 && this.amOrPm === this.options.amtext) {
+			} else if (hours >= 12 && this.amOrPm === this.options.amText) {
 				hours -= 12;
 			}
 		}
@@ -892,18 +892,18 @@
 				outHours = this.hours,
 				value = ':' + leadingZero(this.minutes);
 		
-			if (this.isHTML5 && this.options.twelvehour) {
-				if (this.hours < 12 && this.amOrPm === this.options.pmtext) {
+			if (this.isHTML5 && this.options.twelveHour) {
+				if (this.hours < 12 && this.amOrPm === this.options.pmText) {
 					outHours += 12;
 				}
-				if (this.hours >= 12 && this.amOrPm === this.options.amtext) {
+				if (this.hours >= 12 && this.amOrPm === this.options.amText) {
 					outHours -= 12;
 				}
 			}
 		
 			value = leadingZero(outHours) + value;
 		
-			if (!this.isHTML5 && this.options.twelvehour) {
+			if (!this.isHTML5 && this.options.twelveHour) {
 				value = value + ' ' + this.amOrPm;
 			}
 		
@@ -916,7 +916,7 @@
 			}
 		}
 
-		if (this.options.autoclose) {
+		if (this.options.autoClose) {
 			this.input.trigger('blur');
 		}
 
@@ -940,7 +940,7 @@
 			}
 		}
 
-		if (this.options.autoclose) {
+		if (this.options.autoClose) {
 			this.input.trigger('blur');
 		}
 
@@ -952,12 +952,12 @@
 		var date = new Date();
 		this.hours = date.getHours();
 		this.minutes = date.getMinutes();
-		if (this.options.twelvehour) {
-			this.amOrPm === this.options.amtext;
+		if (this.options.twelveHour) {
+			this.amOrPm === this.options.amText;
 			if(this.hours === 0) {
 				this.hours = 12;
 			} else if(this.hours > 12) {
-				this.amOrPm = this.options.pmtext;
+				this.amOrPm = this.options.pmText;
 				this.hours -= 12;
 			}
 		}

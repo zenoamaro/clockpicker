@@ -175,7 +175,7 @@ test('clockpicker default time is now', function(){
     var fromnow = 9e4;
     input.clockpicker({
         'default': 'now',
-        fromnow: fromnow
+        fromNow: fromnow
     });
     now = new Date(+ new Date() + fromnow);
     picker = input.data('clockpicker');

@@ -151,7 +151,7 @@ $('.clockpicker').clockpicker();
 $('.clockpicker').clockpicker({
 	placement: 'top',
 	align: 'left',
-	donetext: 'Done'
+	doneText: 'Done'
 });
 &lt;/script&gt;</code></pre>
 	</div>
@@ -170,7 +170,7 @@ $('.clockpicker').clockpicker({
 var input = $('#single-input').clockpicker({
 	placement: 'bottom',
 	align: 'left',
-	autoclose: true,
+	autoClose: true,
 	'default': 'now'
 });
 
@@ -198,7 +198,7 @@ $('#check-minutes').click(function(e){
 				&lt;input class="form-control" id="single-input" value="" placeholder="Now"&gt;
 				&lt;script type="text/javascript"&gt;
 				var input = $('.clockpicker-with-callbacks').clockpicker({
-					donetext: 'Done',
+					doneText: 'Done',
 						init: function() { 
 							console.log("colorpicker initiated");
 						},
@@ -232,11 +232,11 @@ $('#check-minutes').click(function(e){
 						afterClear: function() {
 							console.log("after clear");
 						},
-						beforeChange: function() {
-							console.log("before change");
+						beforeChange: function(time) {
+							console.log("before change: " + time);
 						},
-						afterChange: function() {
-							console.log("after change");
+						afterChange: function(time) {
+							console.log("after change: " + time);
 						}
 				});
 
@@ -276,12 +276,12 @@ $('#check-minutes').click(function(e){
 	<td>popover arrow align</td>
 	</tr>
 	<tr>
-	<td>donetext</td>
+	<td>doneText</td>
 	<td>'完成'</td>
 	<td>done button text</td>
 	</tr>
 	<tr>
-	<td>autoclose</td>
+	<td>autoClose</td>
 	<td>false</td>
 	<td>auto close when minute is selected</td>
 	</tr>
@@ -291,7 +291,7 @@ $('#check-minutes').click(function(e){
 	<td>vibrate the device when dragging clock hand</td>
 	</tr>
 	<tr>
-	<td>fromnow</td>
+	<td>fromNow</td>
 	<td>0</td>
 	<td>set default time to * milliseconds from now (using with default = 'now')</td>
 	</tr>
@@ -418,12 +418,12 @@ $('.clockpicker').clockpicker()
 var input = $('#single-input').clockpicker({
 	placement: 'bottom',
 	align: 'left',
-	autoclose: true,
+	autoClose: true,
 	'default': 'now'
 });
 
 $('.clockpicker-with-callbacks').clockpicker({
-		donetext: 'Done',
+		doneText: 'Done',
 		init: function() { 
 			console.log("colorpicker initiated");
 		},
