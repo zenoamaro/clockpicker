@@ -68,23 +68,27 @@
 	var tpl = [
 		'<div class="popover clockpicker-popover">',
 			'<div class="arrow"></div>',
-			'<div class="popover-title">',
-				'<span class="clockpicker-span-blank"></span>',
-				'<span class="clockpicker-span-hours cursor-pointer text-primary"></span>',
-				'<span class="clockpicker-span-separator"> : </span>',
-				'<span class="clockpicker-span-minutes cursor-pointer"></span>',
-				'<span class="clockpicker-span-am-pm cursor-pointer"></span>',
-			'</div>',
-			'<div class="popover-content">',
-				'<div class="clockpicker-plate">',
-					'<div class="clockpicker-canvas"></div>',
-					'<div class="clockpicker-dial clockpicker-hours"></div>',
-					'<div class="clockpicker-dial clockpicker-minutes clockpicker-dial-out"></div>',
+			'<div class="clockpicker-popover-wrapper">',
+				'<div class="clockpicker-popover-inner">',
+					'<div class="popover-title">',
+						'<span class="clockpicker-span-blank"></span>',
+						'<span class="clockpicker-span-hours cursor-pointer text-primary"></span>',
+						'<span class="clockpicker-span-separator"> : </span>',
+						'<span class="clockpicker-span-minutes cursor-pointer"></span>',
+						'<span class="clockpicker-span-am-pm cursor-pointer"></span>',
+					'</div>',
+					'<div class="popover-content">',
+						'<div class="clockpicker-plate">',
+							'<div class="clockpicker-canvas"></div>',
+							'<div class="clockpicker-dial clockpicker-hours"></div>',
+							'<div class="clockpicker-dial clockpicker-minutes clockpicker-dial-out"></div>',
+						'</div>',
+						'<span class="clockpicker-am-pm-block">',
+						'</span>',
+					'</div>',
+					'<div class="popover-footer">',
+					'</div>',
 				'</div>',
-				'<span class="clockpicker-am-pm-block">',
-				'</span>',
-			'</div>',
-			'<div class="popover-footer">',
 			'</div>',
 		'</div>'
 	].join('');
@@ -92,6 +96,7 @@
 	// ClockPicker
 	function ClockPicker(element, options) {
 		var popover = $(tpl),
+			popoverInner = popover.find('.clockpicker-popover-inner'),
 			plate = popover.find('.clockpicker-plate'),
 			hoursView = popover.find('.clockpicker-hours'),
 			minutesView = popover.find('.clockpicker-minutes'),
@@ -118,6 +123,7 @@
 		this.input = input;
 		this.addon = addon;
 		this.popover = popover;
+		this.popoverInner = popoverInner;
 		this.popoverTitle = popover.find('.popover-title');
 		this.plate = plate;
 		this.hoursView = hoursView;
@@ -650,7 +656,7 @@
 		// Hide when clicking or tabbing on any element except the clock, input and addon
 		$doc.on('click.clockpicker.' + this.id + ' focusin.clockpicker.' + this.id, function(e){
 			var target = $(e.target);
-			if (target.closest(self.popover).length === 0 &&
+			if (target.closest(self.popoverInner).length === 0 &&
 					target.closest(self.addon).length === 0 &&
 					target.closest(self.input).length === 0) {
 				self.hide();

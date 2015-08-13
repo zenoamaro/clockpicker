@@ -74,7 +74,7 @@ test('clockpicker on input', function(){
     // Click on popover should not hide
     input.triggerHandler('focus');
     ok(picker.isShown, 'clockpicker is shown again');
-    picker.popover.click();
+    picker.popoverInner.click();
     ok(picker.isShown, 'clockpicker is not hidden when clicked on popover');
 
     // Hide
