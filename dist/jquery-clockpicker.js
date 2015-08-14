@@ -206,6 +206,7 @@
 				raiseCallback(options.beforeChange, self.getTime(true));
 				self.amOrPm = self.amOrPm !== options.amText ? options.amText : options.pmText;
 				self.spanAmPm.empty().append(' ' + self.amOrPm);
+				self.amOrPmSelected = true;
 				raiseCallback(options.afterChange, self.getTime(true));
 			});
 		}
