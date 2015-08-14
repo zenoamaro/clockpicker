@@ -113,6 +113,7 @@
 							'<div class="clockpicker-canvas"></div>',
 							'<div class="clockpicker-dial clockpicker-hours"></div>',
 							'<div class="clockpicker-dial clockpicker-minutes clockpicker-dial-out"></div>',
+							'<div class="clockpicker-dial-overlay"></div>',
 						'</div>',
 						'<span class="clockpicker-am-pm-block">',
 						'</span>',
@@ -132,6 +133,7 @@
 			hoursView = popover.find('.clockpicker-hours'),
 			minutesView = popover.find('.clockpicker-minutes'),
 			amPmBlock = popover.find('.clockpicker-am-pm-block'),
+			popoverContent = popover.find('.popover-content'),
 			popoverFooter = popover.find('.popover-footer'),
 			spanBlank = popover.find('.clockpicker-span-blank'),
 			isInput = element.prop('tagName') === 'INPUT',
@@ -155,6 +157,7 @@
 		this.addon = addon;
 		this.popover = popover;
 		this.popoverInner = popoverInner;
+		this.popoverContent = popoverContent;
 		this.popoverTitle = popover.find('.popover-title');
 		this.plate = plate;
 		this.hoursView = hoursView;
@@ -183,7 +186,10 @@
 						raiseCallback(options.afterChange, self.getTime(true));
 					}
 					self.amOrPmSelected = true;
-					self.autoCloseIfReady();
+					if (self.isDisplayingAmPmView) {
+						self.toggleView('minutes', duration / 2, true);
+						self.autoCloseIfEnabled();
+					}
 				}).appendTo(this.amPmBlock);
 
 
@@ -199,16 +205,11 @@
 						raiseCallback(options.afterChange, self.getTime(true));
 					}
 					self.amOrPmSelected = true;
-					self.autoCloseIfReady();
+					if (self.isDisplayingAmPmView) {
+						self.toggleView('minutes', duration / 2, true);
+						self.autoCloseIfEnabled();
+					}
 				}).appendTo(this.amPmBlock);
-
-			this.spanAmPm.on("click", function() {
-				raiseCallback(options.beforeChange, self.getTime(true));
-				self.amOrPm = self.amOrPm !== options.amText ? options.amText : options.pmText;
-				self.spanAmPm.empty().append(' ' + self.amOrPm);
-				self.amOrPmSelected = true;
-				raiseCallback(options.afterChange, self.getTime(true));
-			});
 		}
 
 		if (options.showNow) {
@@ -237,6 +238,9 @@
 
 		this.spanHours.click($.proxy(this.toggleView, this, 'hours'));
 		this.spanMinutes.click($.proxy(this.toggleView, this, 'minutes'));
+		if (options.twelveHour) {
+			this.spanAmPm.click($.proxy(this.toggleView, this, 'ampm'));
+		}
 
 		// Show or toggle
 		if (!options.addonOnly) {
@@ -359,8 +363,11 @@
 				if (self.currentView === 'hours') {
 					self.toggleView('minutes', duration / 2);
 				} else {
-					self.minutesSelected = true;
-					self.autoCloseIfReady();
+					if (options.twelveHour && !self.amOrPmSelected && options.autoClose) {
+						self.toggleView('ampm', duration / 2);
+					} else {
+						self.autoCloseIfEnabled();
+					}
 				}
 				plate.prepend(canvas);
 
@@ -671,7 +678,6 @@
 		this.locate();
 
 		this.isShown = true;
-		this.minutesSelected = false;
 		this.amOrPmSelected = false;
 
 		//disable body scrolling
@@ -720,27 +726,35 @@
 	};
 
 	// Toggle to hours or minutes view
-	ClockPicker.prototype.toggleView = function(view, delay){
+	ClockPicker.prototype.toggleView = function(view, delay, dontResetClock){
 		var raiseAfterHourSelect = false;
 		if (view === 'minutes' && $(this.hoursView).css("visibility") === "visible") {
 			raiseCallback(this.options.beforeHourSelect);
 			raiseAfterHourSelect = true;
 		}
 		var isHours = view === 'hours',
+			isMinutes = view === 'minutes',
+			isAmPm = !isHours && !isMinutes,
 			nextView = isHours ? this.hoursView : this.minutesView,
 			hideView = isHours ? this.minutesView : this.hoursView;
 
+		view = isAmPm ? 'minutes' : view;
 		this.currentView = view;
+		this.isDisplayingAmPmView = isAmPm;
 
 		this.spanHours.toggleClass('text-primary', isHours);
-		this.spanMinutes.toggleClass('text-primary', ! isHours);
+		this.spanMinutes.toggleClass('text-primary', isMinutes);
+		this.spanAmPm.toggleClass('text-primary', isAmPm);
+		this.popoverContent.toggleClass('clockpicker-am-pm-active', isAmPm);
 
 		// Let's make transitions
 		hideView.addClass('clockpicker-dial-out');
 		nextView.css('visibility', 'visible').removeClass('clockpicker-dial-out');
 
 		// Reset clock hand
-		this.resetClock(delay);
+		if (!dontResetClock) {
+			this.resetClock(delay);
+		}
 
 		// After transitions ended
 		clearTimeout(this.toggleViewTimer);
@@ -788,9 +802,9 @@
 
 		// Calculate the unit
 		if (isHours) {
-			unit = options.hourStep / 6 * Math.PI
+			unit = options.hourStep / 6 * Math.PI;
 		} else {
-			unit = options.minuteStep / 30 * Math.PI
+			unit = options.minuteStep / 30 * Math.PI;
 		}
 
 		if (options.twelveHour) {
@@ -916,6 +930,10 @@
 		selectedTime.setHours(hours);
 		selectedTime.setSeconds(0);
 
+		if(this.options.showBlank && this.hoursBlank) {
+			return null;
+		}
+
 		return callback && callback.apply(this.element, selectedTime) || selectedTime;
 	}
 
@@ -1002,8 +1020,9 @@
 		this.done();
 	};
 
-	ClockPicker.prototype.autoCloseIfReady = function() {
-		if (this.options.autoClose && this.minutesSelected && (!this.options.twelveHour || this.amOrPmSelected)) {
+	ClockPicker.prototype.autoCloseIfEnabled = function() {
+		var anyBlank = this.minutesBlank || this.hoursBlank;
+		if (this.options.autoClose && !anyBlank) {
 			var self = this;
 			this.minutesView.addClass('clockpicker-dial-out');
 			setTimeout(function(){

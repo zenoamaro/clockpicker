@@ -269,7 +269,8 @@
 	user-select: none;
 }
 .clockpicker-canvas,
-.clockpicker-dial {
+.clockpicker-dial,
+.clockpicker-dial-overlay {
 	width: 200px;
 	height: 200px;
 	position: absolute;
@@ -313,7 +314,8 @@
 .clockpicker-button:focus {
 	outline: none!important;
 }
-.clockpicker-dial {
+.clockpicker-dial,
+.clockpicker-dial-overlay {
 	-webkit-transition: -webkit-transform 350ms, opacity 350ms;
 	-moz-transition: -moz-transform 350ms, opacity 350ms;
 	-ms-transition: -ms-transform 350ms, opacity 350ms;
@@ -322,6 +324,15 @@
 }
 .clockpicker-dial-out {
 	opacity: 0;
+}
+.clockpicker-dial-overlay {
+	background-color: #f8f8f8;
+	opacity: 0;
+	display: none;
+}
+.popover-content.clockpicker-am-pm-active .clockpicker-dial-overlay {
+	opacity: 0.75;
+	display: block;
 }
 .clockpicker-hours.clockpicker-dial-out {
 	-webkit-transform: scale(1.2, 1.2);
@@ -365,16 +376,30 @@
 	stroke-linecap: round;
 	/*shape-rendering: crispEdges;*/
 }
-.clockpicker-button.am-button {
+.clockpicker-am-pm-block {
+	position: relative;
+}
+.clockpicker-button.am-button,
+.clockpicker-button.pm-button {
 	margin: 1px;
+	margin-top: -13px;
 	padding: 5px;
 	border: 1px solid rgba(0, 0, 0, .2);
 	border-radius: 4px;
-	
+	-webkit-transition: margin 350ms;
+	-moz-transition: margin 350ms;
+	-ms-transition: margin 350ms;
+	-o-transition: margin 350ms;
+	transition: margin 350ms;
 }
 .clockpicker-button.pm-button {
-	margin: 1px 1px 1px 136px;
-	padding: 5px;
-	border: 1px solid rgba(0, 0, 0, .2);
-	border-radius: 4px;
+	margin-left: 137px;
+}
+.popover-content.clockpicker-am-pm-active .clockpicker-button.am-button {
+	margin-top: -220px;
+	margin-left: 50px;
+}
+.popover-content.clockpicker-am-pm-active .clockpicker-button.pm-button {
+	margin-top: -220px;
+	margin-left: 40px;
 }
