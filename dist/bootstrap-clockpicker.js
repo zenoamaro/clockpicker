@@ -540,7 +540,7 @@
 			this.updatePlacementClass(placement !== 'viewport-top' ? placement : '');
 		}
 
-		popover.show();
+		this.popover.addClass('clockpicker-popover-open');
 
 		// Place the popover
 		switch (placement) {
@@ -678,7 +678,6 @@
 		this.locate();
 
 		this.isShown = true;
-		this.popover.addClass('clockpicker-popover-open');
 		this.amOrPmSelected = false;
 
 		//disable body scrolling
@@ -711,7 +710,6 @@
 		raiseCallback(this.options.beforeHide);
 
 		this.isShown = false;
-		this.popover.removeClass('clockpicker-popover-open');
 
 		//enable body scrolling
 		if (this.options.preventScroll) {
@@ -722,7 +720,7 @@
 		$doc.off('click.clockpicker.' + this.id + ' focusin.clockpicker.' + this.id);
 		$doc.off('keyup.clockpicker.' + this.id);
 
-		this.popover.hide();
+		this.popover.removeClass('clockpicker-popover-open');
 
 		raiseCallback(this.options.afterHide);
 	};

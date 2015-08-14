@@ -4,6 +4,12 @@
  * Licensed under MIT (https://github.com/weareoutman/clockpicker/blob/gh-pages/LICENSE)
  */
 
+.clockpicker-popover {
+	display: none;
+}
+.clockpicker-popover.clockpicker-popover-open {
+	display: block;
+}
 .clockpicker .input-group-addon {
 	cursor: pointer;
 }
