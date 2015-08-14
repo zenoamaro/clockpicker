@@ -179,13 +179,14 @@
 	/*shape-rendering: crispEdges;*/
 }
 .clockpicker-am-pm-block {
+	height: 30px;
+    display: block;
 	position: relative;
 	z-index: 1;
 }
 .clockpicker-button.am-button,
 .clockpicker-button.pm-button {
 	margin: 1px;
-	margin-top: -13px;
 	padding: 5px;
 	border: 1px solid rgba(0, 0, 0, .2);
 	border-radius: 4px;
@@ -195,14 +196,17 @@
 	-o-transition: margin 350ms;
 	transition: margin 350ms;
 }
+.clockpicker-button.am-button {
+	float: left;
+}
 .clockpicker-button.pm-button {
-	margin-left: 137px;
+	float: right;
 }
 .popover-content.clockpicker-am-pm-active .clockpicker-button.am-button {
-	margin-top: -220px;
+	margin-top: -115px;
 	margin-left: 50px;
 }
 .popover-content.clockpicker-am-pm-active .clockpicker-button.pm-button {
-	margin-top: -220px;
-	margin-left: 40px;
+	margin-top: -115px;
+	margin-right: 50px;
 }
