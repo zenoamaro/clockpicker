@@ -182,12 +182,8 @@
 					if (changed) {
 						raiseCallback(options.afterChange, self.getTime(true));
 					}
-
-					if (options.ampmSubmit) {
-						setTimeout(function(){
-							self.done();
-						}, duration / 2);
-					}
+					self.amOrPmSelected = true;
+					self.autoCloseIfReady();
 				}).appendTo(this.amPmBlock);
 
 
@@ -202,12 +198,8 @@
 					if (changed) {
 						raiseCallback(options.afterChange, self.getTime(true));
 					}
-
-					if (options.ampmSubmit) {
-						setTimeout(function(){
-							self.done();
-						}, duration / 2);
-					}
+					self.amOrPmSelected = true;
+					self.autoCloseIfReady();
 				}).appendTo(this.amPmBlock);
 
 			this.spanAmPm.on("click", function() {
@@ -228,7 +220,7 @@
 				.click($.proxy(this.clear, this))
 				.appendTo(popoverFooter);
 		}
-		if (! options.autoClose) {
+		if (options.showDone) {
 			// If autoClose is not setted, append a button
 			$('<button type="button" class="' + (options.klass.doneButton || 'btn btn-sm btn-default btn-block clockpicker-button') + '">' + options.doneText + '</button>')
 				.click($.proxy(this.done, this))
@@ -366,14 +358,8 @@
 				if (self.currentView === 'hours') {
 					self.toggleView('minutes', duration / 2);
 				} else {
-					if (options.autoClose) {
-						if (!options.ampmSubmit) {
-							self.minutesView.addClass('clockpicker-dial-out');
-							setTimeout(function(){
-								self.done();
-							}, duration / 2);
-						}
-					}
+					self.minutesSelected = true;
+					self.autoCloseIfReady();
 				}
 				plate.prepend(canvas);
 
@@ -484,16 +470,16 @@
 		doneText: 'Done',	// done button text
 		clearText: 'Clear',	// clear button text
 		nowText: 'Now',		// now button text
-		autoClose: false,	// auto close when minute is selected
+		autoClose: false,	// auto close when minute (or if twelveHour, both minute and am/pm) is selected
 		showClear: false,	// show clear button
 		showNow: false,		// show now button
+		showDone: true,		// show done button
 		twelveHour: false,	// change to 12 hour AM/PM clock from 24 hour
 		amText: 'AM',		// text for AM
 		pmText: 'PM',		// text for PM
 		vibrate: true,		// vibrate the device when dragging clock hand
 		hourStep: 1,		// allow to multi increment the hour
 		minuteStep: 1,		// allow to multi increment the minute
-		ampmSubmit: false,	// allow submit with AM and PM buttons instead of the minute selection/picker
 		addonOnly: false,	// only open on clicking on the input-addon
 		setInput: true,		// set the input value when done
 		showBlank: false,	// show a blank clock for blank input
@@ -684,6 +670,8 @@
 		this.locate();
 
 		this.isShown = true;
+		this.minutesSelected = false;
+		this.amOrPmSelected = false;
 
 		//disable body scrolling
 		if (this.options.preventScroll) {
@@ -1011,6 +999,16 @@
 		}
 		raiseCallback(this.options.afterChange, this.getTime(true));
 		this.done();
+	};
+
+	ClockPicker.prototype.autoCloseIfReady = function() {
+		if (this.options.autoClose && this.minutesSelected && (!this.options.twelveHour || this.amOrPmSelected)) {
+			var self = this;
+			this.minutesView.addClass('clockpicker-dial-out');
+			setTimeout(function(){
+				self.done();
+			}, duration / 2);
+		}
 	};
 
 	// Remove clockpicker from input
