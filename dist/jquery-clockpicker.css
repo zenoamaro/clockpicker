@@ -314,8 +314,7 @@
 .clockpicker-button:focus {
 	outline: none!important;
 }
-.clockpicker-dial,
-.clockpicker-dial-overlay {
+.clockpicker-dial {
 	-webkit-transition: -webkit-transform 350ms, opacity 350ms;
 	-moz-transition: -moz-transform 350ms, opacity 350ms;
 	-ms-transition: -ms-transform 350ms, opacity 350ms;
@@ -326,13 +325,18 @@
 	opacity: 0;
 }
 .clockpicker-dial-overlay {
+	-webkit-transition: opacity 350ms, z-index 350ms;
+	-moz-transition: opacity 350ms, z-index 350ms;
+	-ms-transition: opacity 350ms, z-index 350ms;
+	-o-transition: opacity 350ms, z-index 350ms;
+	transition: opacity 350ms, z-index 350ms;
 	background-color: #f8f8f8;
+	z-index: -1;
 	opacity: 0;
-	display: none;
 }
 .popover-content.clockpicker-am-pm-active .clockpicker-dial-overlay {
-	opacity: 0.75;
-	display: block;
+	opacity: 0.8;
+	z-index: 1;
 }
 .clockpicker-hours.clockpicker-dial-out {
 	-webkit-transform: scale(1.2, 1.2);
@@ -378,6 +382,7 @@
 }
 .clockpicker-am-pm-block {
 	position: relative;
+	z-index: 1;
 }
 .clockpicker-button.am-button,
 .clockpicker-button.pm-button {
