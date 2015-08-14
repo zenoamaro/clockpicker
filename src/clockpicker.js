@@ -769,6 +769,9 @@
 
 	// Reset clock hand
 	ClockPicker.prototype.resetClock = function(delay){
+		if (this.isDisplayingAmPmView) {
+			return;
+		}
 		var view = this.currentView,
 			value = this[view],
 			isHours = view === 'hours',
@@ -791,6 +794,9 @@
 
 	// Set clock hand to (x, y)
 	ClockPicker.prototype.setHand = function(x, y, dragging, setValue){
+		if (this.isDisplayingAmPmView) {
+			return;
+		}
 		var radian = Math.atan2(x, - y),
 			isHours = this.currentView === 'hours',
 			z = Math.sqrt(x * x + y * y),
