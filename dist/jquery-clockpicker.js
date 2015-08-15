@@ -493,6 +493,7 @@
 		showBlank: false,	// show a blank clock for blank input
 		blankTitle: '',		// text to show in the title when hours/minutes are both blank
 		preventScroll:false,// prevent scrolling while popup is open
+		preventClose: false,// prevent close when clicking/focusing outside popup
 		klass: {			// custom classes for elements
 			amButton: null,
 			pmButton: null,
@@ -685,22 +686,24 @@
 			$html.css('overflow', 'hidden').css('padding-right', '+=' + getScrollbarWidth());
 		}
 
-		// Hide when clicking or tabbing on any element except the clock, input and addon
-		$doc.on('click.clockpicker.' + this.id + ' focusin.clockpicker.' + this.id, function(e){
-			var target = $(e.target);
-			if (target.closest(self.popoverInner).length === 0 &&
-					target.closest(self.addon).length === 0 &&
-					target.closest(self.input).length === 0) {
-				self.hide();
-			}
-		});
+		if (!this.options.preventClose) {
+			// Hide when clicking or tabbing on any element except the clock, input and addon
+			$doc.on('click.clockpicker.' + this.id + ' focusin.clockpicker.' + this.id, function(e){
+				var target = $(e.target);
+				if (target.closest(self.popoverInner).length === 0 &&
+						target.closest(self.addon).length === 0 &&
+						target.closest(self.input).length === 0) {
+					self.hide();
+				}
+			});
 
-		// Hide when ESC is pressed
-		$doc.on('keyup.clockpicker.' + this.id, function(e){
-			if (e.keyCode === 27) {
-				self.hide();
-			}
-		});
+			// Hide when ESC is pressed
+			$doc.on('keyup.clockpicker.' + this.id, function(e){
+				if (e.keyCode === 27) {
+					self.hide();
+				}
+			});
+		}
 
 		raiseCallback(this.options.afterShow);
 	};
