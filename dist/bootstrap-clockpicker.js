@@ -980,10 +980,6 @@
 			}
 		}
 
-		if (this.options.autoClose) {
-			this.input.trigger('blur');
-		}
-
 		raiseCallback(this.options.afterDone);
 	};
 
@@ -1002,10 +998,6 @@
 					this.element.trigger('change');
 				}
 			}
-		}
-
-		if (this.options.autoClose) {
-			this.input.trigger('blur');
 		}
 
 		raiseCallback(this.options.afterClear);
