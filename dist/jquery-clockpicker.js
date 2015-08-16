@@ -507,6 +507,8 @@
 		preventScroll:false,// prevent scrolling while popup is open
 		preventClose: false,// prevent close when clicking/focusing outside popup
 		inline: false,		// show the clockpicker inline (show/hide does nothing)
+		container: null,	// container to insert the clockpicker within (inserts into clockpicker element if inline, inserts into document.body if null)
+		offset: null,		// container offset (object with top/left properties) to use to show the popover (if null, uses element.offset())
 		klass: {			// custom classes for elements
 			amButton: null,
 			pmButton: null,
@@ -541,7 +543,7 @@
 
 		var element = this.element,
 			popover = this.popover,
-			offset = element.offset(),
+			offset = this.options.offset || element.offset(),
 			width = element.outerWidth(),
 			height = element.outerHeight(),
 			placement = this.options.placement,
@@ -685,7 +687,7 @@
 		// Initialize
 		if (! this.isAppended) {
 			// Append popover to body
-			$body = this.element.after(this.popover);
+			$body = $(this.options.container || document.body).append(this.popover);
 
 			// Reset position when resize
 			$win.on('resize.clockpicker' + this.id, function(){
