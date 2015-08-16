@@ -168,6 +168,7 @@
 		this.amOrPm = "";
 		this.currentPlacementClass = options.placement;
 
+		popover.toggleClass('clockpicker-popover-inline', options.inline);
 		amPmBlock.toggleClass('clockpicker-am-pm-block-hidden', !options.twelveHour);
 		spanBlank.html(options.blankTitle);
 
@@ -233,8 +234,10 @@
 		if (/^(top|bottom)/.test(options.placement) && (options.align === 'top' || options.align === 'bottom')) options.align = 'left';
 		if ((options.placement === 'left' || options.placement === 'right') && (options.align === 'left' || options.align === 'right')) options.align = 'top';
 
-		popover.addClass(options.placement);
-		popover.addClass('clockpicker-align-' + options.align);
+		if (!options.inline) {
+			popover.addClass(options.placement);
+			popover.addClass('clockpicker-align-' + options.align);
+		}
 
 		this.spanHours.click($.proxy(this.toggleView, this, 'hours'));
 		this.spanMinutes.click($.proxy(this.toggleView, this, 'minutes'));
@@ -243,10 +246,12 @@
 		}
 
 		// Show or toggle
-		if (!options.addonOnly) {
-			input.on('focus.clockpicker click.clockpicker', $.proxy(this.show, this));
+		if (!options.inline) {
+			if (!options.addonOnly) {
+				input.on('focus.clockpicker click.clockpicker', $.proxy(this.show, this));
+			}
+			addon.on('click.clockpicker', $.proxy(this.toggle, this));
 		}
-		addon.on('click.clockpicker', $.proxy(this.toggle, this));
 
 		// Build ticks
 		var tickTpl = $('<div class="clockpicker-tick"></div>'),
@@ -418,6 +423,12 @@
 			this.canvas = canvas;
 		}
 
+		if (options.inline) {
+			$body = this.element.append(this.popover);
+			this.isAppended = true;
+			this.resetToInitialView();
+		}
+
 		raiseCallback(this.options.init);
 	}
 
@@ -494,6 +505,7 @@
 		blankTitle: '',		// text to show in the title when hours/minutes are both blank
 		preventScroll:false,// prevent scrolling while popup is open
 		preventClose: false,// prevent close when clicking/focusing outside popup
+		inline: false,		// show the clockpicker inline (show/hide does nothing)
 		klass: {			// custom classes for elements
 			amButton: null,
 			pmButton: null,
@@ -522,6 +534,10 @@
 
 	// Set popover position and update placement class, if needed
 	ClockPicker.prototype.locate = function(){
+		if (this.options.inline) {
+			return;
+		}
+
 		var element = this.element,
 			popover = this.popover,
 			offset = element.offset(),
@@ -579,6 +595,23 @@
 		}
 
 		popover.css(styles);
+	};
+
+	ClockPicker.prototype.resetToInitialView = function(){
+		// Get the time from the input field
+		this.parseInputValue();
+
+		this.spanHours.html(this.options.showBlank && this.hoursBlank ? '__' : leadingZero(this.hours));
+		this.spanMinutes.html(this.options.showBlank && this.minutesBlank ? '__' : leadingZero(this.minutes));
+
+		if (this.options.twelveHour) {
+			this.spanAmPm.empty().append(' ' + this.amOrPm);
+		}
+
+		// Toggle to hours view
+		this.toggleView('hours');
+
+		this.amOrPmSelected = false;
 	};
 
 	// The input can be changed by the user
@@ -639,7 +672,7 @@
 	// Show popover
 	ClockPicker.prototype.show = function(e){
 		// Not show again
-		if (this.isShown) {
+		if (this.isShown || this.options.inline) {
 			return;
 		}
 
@@ -662,24 +695,12 @@
 			this.isAppended = true;
 		}
 
-		// Get the time from the input field
-		this.parseInputValue();
-
-		this.spanHours.html(this.options.showBlank && this.hoursBlank ? '__' : leadingZero(this.hours));
-		this.spanMinutes.html(this.options.showBlank && this.minutesBlank ? '__' : leadingZero(this.minutes));
-
-		if (this.options.twelveHour) {
-			this.spanAmPm.empty().append(' ' + this.amOrPm);
-		}
-
-		// Toggle to hours view
-		this.toggleView('hours');
+		this.resetToInitialView();
 
 		// Set position
 		this.locate();
 
 		this.isShown = true;
-		this.amOrPmSelected = false;
 
 		//disable body scrolling
 		if (this.options.preventScroll) {
@@ -710,6 +731,10 @@
 
 	// Hide popover
 	ClockPicker.prototype.hide = function(){
+		if (this.options.inline) {
+			return;
+		}
+
 		raiseCallback(this.options.beforeHide);
 
 		this.isShown = false;
