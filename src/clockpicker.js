@@ -115,8 +115,7 @@
 							'<div class="clockpicker-dial clockpicker-minutes clockpicker-dial-out"></div>',
 							'<div class="clockpicker-dial-overlay"></div>',
 						'</div>',
-						'<span class="clockpicker-am-pm-block">',
-						'</span>',
+						'<div class="clockpicker-am-pm-block"></div>',
 					'</div>',
 					'<div class="popover-footer">',
 					'</div>',
@@ -169,6 +168,7 @@
 		this.amOrPm = "";
 		this.currentPlacementClass = options.placement;
 
+		amPmBlock.toggleClass('clockpicker-am-pm-block-hidden', !options.twelveHour);
 		spanBlank.html(options.blankTitle);
 
 		// Setup for for 12 hour clock if option is selected

@@ -186,9 +186,11 @@
 }
 .clockpicker-am-pm-block {
 	height: 30px;
-    display: block;
 	position: relative;
 	z-index: 1;
+}
+.clockpicker-am-pm-block-hidden {
+	display: none;
 }
 .clockpicker-button.am-button,
 .clockpicker-button.pm-button {
