@@ -285,7 +285,7 @@
 				if (!inner) {
 					tick.css('font-size', '120%');
 				}
-				tick.html(i === 0 ? '00' : i);
+				tick.html(i === 0 ? '0' : i);
 				hoursView.append(tick);
 				tick.on(mousedownEvent, mousedown);
 			}
