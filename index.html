@@ -59,130 +59,9 @@
 </div>
 
 <div class="container">
-	<p class="lead">
-		A clock-style timepicker for Bootstrap (or jQuery).
-		<a href="https://travis-ci.org/weareoutman/clockpicker"><img src="https://travis-ci.org/weareoutman/clockpicker.svg" alt="Build Status" data-canonical-src="https://travis-ci.org/weareoutman/clockpicker.svg" style="max-width:100%;"></a>
-	</p>
+	<p>See <a href="http://weareoutman.github.io/clockpicker/">http://weareoutman.github.io/clockpicker/</a></p>
 
-	<p>
-		<a href="https://github.com/weareoutman/clockpicker/archive/gh-pages.zip" class="btn btn-lg btn-default" target="_blank">
-			<span class="glyphicon glyphicon-cloud-download"></span> Download ZIP
-		</a>
-		&nbsp; CSS &lt; 6KB, JS &lt; 9KB, after minified.
-	</p>
-
-	<h3>Browser support</h3>
-	<p>
-		All major browsers are supported, including IE 9+. It should look and behave well enough in IE 8.
-	</p>
-
-	<h3>Device support</h3>
-	<p>
-		Both desktop and mobile device are supported. It also works great in touch screen device.
-	</p>
-
-	<h3>Dependencies</h3>
-	<p>
-		ClockPicker was designed for Bootstrap in the beginning. So Bootstrap (and jQuery) is the only dependency(s).
-	</p>
-	<p>
-		Since it only used <code>.popover</code> and some of <code>.btn</code> styles of Bootstrap, I picked these styles to build a jQuery plugin.
-		Feel free to use <code>jquery-*</code> files instead of <code>bootstrap-*</code> , for non-bootstrap project.
-	</p>
-	<p>
-		<a href="jquery.html">See ClockPicker for jQuery</a>.
-	</p>
-
-	<h3>Examples</h3>
-	<a href="http://jsfiddle.net/weareoutman/YkvK9/">Try it on jsfiddle</a>
-	<div class="form-group">
-		<h4>Default: </h4>
-		<div class="input-group clockpicker">
-			<input type="text" class="form-control" value="09:30">
-			<span class="input-group-addon">
-				<span class="glyphicon glyphicon-time"></span>
-			</span>
-		</div>
-		<pre class="hljs-pre"><code class="html">&lt;div class="input-group clockpicker"&gt;
-	&lt;input type="text" class="form-control" value="09:30"&gt;
-	&lt;span class="input-group-addon"&gt;
-		&lt;span class="glyphicon glyphicon-time"&gt;&lt;/span&gt;
-	&lt;/span&gt;
-&lt;/div&gt;
-&lt;script type="text/javascript"&gt;
-$('.clockpicker').clockpicker();
-&lt;/script&gt;</code></pre>
-	</div>
-	<div class="form-group">
-		<h4>Place at left, align the arrow to top, auto close:</h4>
-		<div class="clearfix">
-			<div class="input-group clockpicker pull-center" data-placement="left" data-align="top" data-auto-close="true">
-				<input type="text" class="form-control" value="13:14">
-				<span class="input-group-addon">
-					<span class="glyphicon glyphicon-time"></span>
-				</span>
-			</div>
-		</div>
-		<pre class="hljs-pre"><code class="html">&lt;div class="input-group clockpicker" data-placement="left" data-align="top" data-auto-close="true"&gt;
-	&lt;input type="text" class="form-control" value="13:14"&gt;
-	&lt;span class="input-group-addon"&gt;
-		&lt;span class="glyphicon glyphicon-time"&gt;&lt;/span&gt;
-	&lt;/span&gt;
-&lt;/div&gt;
-&lt;script type="text/javascript"&gt;
-$('.clockpicker').clockpicker();
-&lt;/script&gt;</code></pre>
-	</div>
-	<div class="form-group">
-		<h4>Set options in javascript, instead of <code>data-*</code> :</h4>
-		<div class="input-group clockpicker" data-placement="top" data-align="left" data-done-text="Done">
-			<input type="text" class="form-control" value="18:00">
-			<span class="input-group-addon">
-				<span class="glyphicon glyphicon-time"></span>
-			</span>
-		</div>
-		<pre class="hljs-pre"><code class="html">&lt;div class="input-group clockpicker"&gt;
-	&lt;input type="text" class="form-control" value="18:00"&gt;
-	&lt;span class="input-group-addon"&gt;
-		&lt;span class="glyphicon glyphicon-time"&gt;&lt;/span&gt;
-	&lt;/span&gt;
-&lt;/div&gt;
-&lt;script type="text/javascript"&gt;
-$('.clockpicker').clockpicker({
-	placement: 'top',
-	align: 'left',
-	doneText: 'Done'
-});
-&lt;/script&gt;</code></pre>
-	</div>
-	<div class="form-group">
-		<h4>Set default value, input without addon, and manual operations:</h4>
-		<div class="clearfix">
-			<div class="pull-center clearfix" style="margin-bottom:10px;">
-				<button type="button" class="btn btn-default pull-right" id="check-minutes">Check the minutes</button>
-				<input class="form-control pull-right" id="single-input" value="" placeholder="Now" style="width:80px;margin-right:20px;">
-			</div>
-		</div>
-		<pre class="hljs-pre"><code class="html">&lt;input class="form-control" id="single-input" value="" placeholder="Now"&gt;
-&lt;button type="button" id="check-minutes"&gt;Check the minutes&lt;/button&gt;
-
-&lt;script type="text/javascript"&gt;
-var input = $('#single-input').clockpicker({
-	placement: 'bottom',
-	align: 'left',
-	autoClose: true,
-	'default': 'now'
-});
-
-// Manually toggle to the minutes view
-$('#check-minutes').click(function(e){
-	// Have to stop propagation here
-	e.stopPropagation();
-	input.clockpicker('show')
-			.clockpicker('toggleView', 'minutes');
-});
-&lt;/script&gt;</code></pre>
-	</div>
+	<h3>Experiments</h3>
 	<div class="form-group">
 		<h4>Callbacks:</h4>
 		<div class="clearfix">
@@ -415,12 +294,6 @@ $('.clockpicker').clockpicker()
 	.find('input').change(function(){
 		console.log(this.value);
 	});
-var input = $('#single-input').clockpicker({
-	placement: 'bottom',
-	align: 'left',
-	autoClose: true,
-	'default': 'now'
-});
 
 $('.clockpicker-with-callbacks').clockpicker({
 		doneText: 'Done',
