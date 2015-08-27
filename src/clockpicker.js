@@ -147,6 +147,7 @@
 		this.options = options;
 		this.options.hourStep = this.parseStep(this.options.hourStep, 12);
 		this.options.minuteStep = this.parseStep(this.options.minuteStep, 60);
+		this.options.hoursMax = this.options.hoursMax || 23;
 		this.isAppended = false;
 		this.isShown = false;
 		this.currentView = 'hours';
@@ -259,7 +260,7 @@
 
 		// Hours view
 		if (options.twelveHour) {
-			for (i = 0; i < 12; i += options.hourStep) {
+			for (i = 0; i <= this.options.hoursMax; i += options.hourStep) {
 				tick = tickTpl.clone();
 				radian = i / 6 * Math.PI;
 				radius = outerRadius;
@@ -273,7 +274,7 @@
 				tick.on(mousedownEvent, mousedown);
 			}
 		} else {
-			for (i = 0; i < 24; i += options.hourStep) {
+			for (i = 0; i <= this.options.hoursMax; i += options.hourStep) {
 				tick = tickTpl.clone();
 				radian = i / 6 * Math.PI;
 				var inner = i > 0 && i < 13;
