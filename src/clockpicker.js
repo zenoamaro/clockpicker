@@ -276,13 +276,13 @@
 			for (i = 0; i <= (this.options.hoursMax || 23); i += options.hourStep) {
 				tick = tickTpl.clone();
 				radian = i / 6 * Math.PI;
-				var inner = i > 0 && i < 13;
+				var inner = i >= 12;
 				radius = inner ? innerRadius : outerRadius;
 				tick.css({
 					left: dialRadius + Math.sin(radian) * radius - tickRadius,
 					top: dialRadius - Math.cos(radian) * radius - tickRadius
 				});
-				if (inner) {
+				if (!inner) {
 					tick.css('font-size', '120%');
 				}
 				tick.html(i === 0 ? '00' : i);
