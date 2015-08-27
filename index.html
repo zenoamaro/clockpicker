@@ -239,7 +239,9 @@ $('.clockpicker').clockpicker()
 	});
 
 $('.clockpicker-with-callbacks').clockpicker({
-		doneText: 'Save ' + ('estimation' || 'completed'),
+		doneText: 'Save ' + ('estimated' || 'completed') + ' hours',
+		showClear: true,
+		clearText: 'Zero ' + ('estimated' || 'completed') + ' hours',
 		init: function() {
 			console.log("colorpicker initiated");
 		},
