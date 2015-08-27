@@ -13,7 +13,7 @@
     "url": "git://github.com/weareoutman/clockpicker.git"
   },
   "scripts": {
-    "test": "gulp test"
+    "test": "./node_modules/.bin/gulp test"
   },
   "dependencies": {},
   "devDependencies": {
