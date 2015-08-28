@@ -431,13 +431,6 @@ var input = $('#single-input').clockpicker({
 	'default': 'now'
 });
 
-$('.clockpicker-duration').clockpicker({
-	placement: 'right',
-	twelveHour: true,
-	hourStep: 0.5,
-	minuteStep: 30
-});
-
 $('.clockpicker-with-callbacks').clockpicker({
 		doneText: 'Done',
 		init: function() {
@@ -495,6 +488,7 @@ if (/mobile/i.test(navigator.userAgent)) {
 	$('input').prop('readOnly', true);
 }
 </script>
+<script type="text/javascript" src="duration-sample.js"></script>
 <script type="text/javascript" src="assets/js/highlight.min.js"></script>
 <script type="text/javascript">
 hljs.configure({tabReplace: '    '});
