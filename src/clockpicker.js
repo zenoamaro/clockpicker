@@ -257,6 +257,13 @@
 		var tickTpl = $('<div class="clockpicker-tick"></div>'),
 			i, tick, radian, radius;
 
+		var displayHour = function(hour) {
+			if (hour === 0) {
+				return options.twelveHour ? 12 : '00';
+			}
+			return hour;
+		}
+
 		// Hours view
 		if (options.twelveHour) {
 			for (i = 0; i < 12; i += options.hourStep) {
@@ -268,7 +275,7 @@
 					left: dialRadius + Math.sin(radian) * radius - tickRadius,
 					top: dialRadius - Math.cos(radian) * radius - tickRadius
 				});
-				tick.html(i === 0 ? 12 : i);
+				tick.html(displayHour(i));
 				hoursView.append(tick);
 				tick.on(mousedownEvent, mousedown);
 			}
@@ -285,7 +292,7 @@
 				if (inner) {
 					tick.css('font-size', '120%');
 				}
-				tick.html(i === 0 ? '00' : i);
+				tick.html(displayHour(i));
 				hoursView.append(tick);
 				tick.on(mousedownEvent, mousedown);
 			}
