@@ -96,6 +96,15 @@
 	<h3>Examples</h3>
 	<a href="http://jsfiddle.net/weareoutman/YkvK9/">Try it on jsfiddle</a>
 	<div class="form-group">
+	<h4>Duration: </h4>
+		<div class="input-group clockpicker-duration">
+			<input type="text" class="form-control" value="">
+			<span class="input-group-addon">
+				<span class="glyphicon glyphicon-time"></span>
+			</span>
+		</div>
+	</div>
+	<div class="form-group">
 		<h4>Default: </h4>
 		<div class="input-group clockpicker">
 			<input type="text" class="form-control" value="09:30">
@@ -420,6 +429,11 @@ var input = $('#single-input').clockpicker({
 	align: 'left',
 	autoClose: true,
 	'default': 'now'
+});
+
+$('.clockpicker-duration').clockpicker({
+	placement: 'right',
+	twelveHour: true
 });
 
 $('.clockpicker-with-callbacks').clockpicker({
