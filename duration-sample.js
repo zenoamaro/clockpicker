@@ -57,4 +57,4 @@ duration.picker = duration.$e.data('clockpicker');
 
 console.log('Clockpicker API', Object.keys(duration.picker));
 
-duration.picker.now();
+duration.picker.nowTime(8, 0);

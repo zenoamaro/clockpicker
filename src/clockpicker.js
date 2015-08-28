@@ -1049,11 +1049,10 @@
 		raiseCallback(this.options.afterClear);
 	};
 
-	ClockPicker.prototype.now = function() {
+	ClockPicker.prototype.nowTime = function(hours, minutes) {
 		raiseCallback(this.options.beforeChange, this.getTime(true));
-		var date = new Date();
-		this.hours = date.getHours();
-		this.minutes = date.getMinutes();
+		this.hours = hours;
+		this.minutes = minutes;
 		if (this.options.twelveHour) {
 			this.amOrPm === this.options.amText;
 			if(this.hours === 0) {
@@ -1065,6 +1064,11 @@
 		}
 		raiseCallback(this.options.afterChange, this.getTime(true));
 		this.done();
+	};
+
+	ClockPicker.prototype.now = function() {
+		var date = new Date();
+		this.nowTime(date.getHours(), date.getMinutes());
 	};
 
 	ClockPicker.prototype.autoCloseIfEnabled = function() {
