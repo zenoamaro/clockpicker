@@ -1,0 +1,10 @@
+
+
+
+.clockpicker-span-separator, .clockpicker-span-minutes, .clockpicker-span-am-pm {
+  display: none;
+}
+
+.clockpicker-am-pm-block {
+  display: none;
+}
