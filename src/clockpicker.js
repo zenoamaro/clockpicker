@@ -262,7 +262,7 @@
 				return options.twelveHour ? 12 : '00';
 			}
 			if (Math.floor(hour) !== hour) {
-				return '.';
+				return '&middot;';
 			}
 			return hour;
 		}
