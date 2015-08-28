@@ -3,10 +3,10 @@ var duration = {
 };
 
 duration.$e = $('.clockpicker-duration').clockpicker({
-	placement: 'right',
-	twelveHour: true,
-	hourStep: 0.5,
-	minuteStep: 30,
+  placement: 'right',
+  twelveHour: true,
+  hourStep: 0.5,
+  minuteStep: 30,
 
   init: function() {
     console.log("colorpicker initiated");
