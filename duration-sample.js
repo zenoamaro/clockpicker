@@ -7,6 +7,7 @@ duration.$e = $('.clockpicker-duration').clockpicker({
   twelveHour: true,
   hourStep: 0.5,
   minuteStep: 30,
+  toggleMode: 'never',
 
   init: function() {
     console.log("colorpicker initiated");

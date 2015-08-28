@@ -376,7 +376,9 @@
 					y = (isTouch ? e.originalEvent.changedTouches[0] : e).pageY - y0;
 				self.setHand(x, y, false, true);
 				if (self.currentView === 'hours') {
-					self.toggleView('minutes', duration / 2);
+					if (self.options.toggleMode !== 'never') {
+						self.toggleView('minutes', duration / 2);
+					}
 				} else {
 					if (options.twelveHour && !self.amOrPmSelected && options.autoClose) {
 						self.toggleView('ampm', duration / 2);
@@ -516,6 +518,7 @@
 		blankTitle: '',		// text to show in the title when hours/minutes are both blank
 		preventScroll:false,// prevent scrolling while popup is open
 		preventClose: false,// prevent close when clicking/focusing outside popup
+		toggleMode: 'auto', // set to 'never' to block automatic toggle from hours -- incomplete impl
 		inline: false,		// show the clockpicker inline (show/hide does nothing)
 		container: null,	// container to insert the clockpicker within (inserts into clockpicker element if inline, inserts into document.body if null)
 		offset: null,		// container offset (object with top/left properties) to use to show the popover (if null, uses element.offset())
