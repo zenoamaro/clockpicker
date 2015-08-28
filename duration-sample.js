@@ -1,5 +1,5 @@
 
-$('.clockpicker-duration').clockpicker({
+var $clockpickerDuration = $('.clockpicker-duration').clockpicker({
 	placement: 'right',
 	twelveHour: true,
 	hourStep: 0.5,
@@ -44,7 +44,14 @@ $('.clockpicker-duration').clockpicker({
   afterChange: function(time) {
     console.log("after change: " + time);
   }
-})
-.find('input').change(function(){
+});
+
+$clockpickerDuration.find('input').change(function(){
   console.log('duration value', this.value);
 });
+
+var clockpickerDuration = $clockpickerDuration.data('clockpicker');
+
+console.log('Clockpicker API', Object.keys(clockpickerDuration));
+
+clockpickerDuration.now();
