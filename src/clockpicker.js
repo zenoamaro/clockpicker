@@ -76,7 +76,7 @@
 	}
 
 	function leadingZero(num) {
-		return (num < 10 ? '0' : '') + num;
+		return '' + num;
 	}
 
 	// Get a unique id
