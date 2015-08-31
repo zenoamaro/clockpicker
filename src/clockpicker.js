@@ -818,14 +818,15 @@
 			return;
 		}
 		var view = this.currentView,
-			value = this[view],
 			isHours = view === 'hours',
+			value = isHours ? this.hours + (this.minutes / 60) : this.minutes,
 			unit = Math.PI / (isHours ? 6 : 30),
 			radian = value * unit,
 			radius = isHours && value > 0 && value < 13 ? innerRadius : outerRadius,
 			x = Math.sin(radian) * radius,
 			y = - Math.cos(radian) * radius,
 			self = this;
+
 		if (svgSupported && delay) {
 			self.canvas.addClass('clockpicker-canvas-out');
 			setTimeout(function(){
