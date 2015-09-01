@@ -661,7 +661,7 @@
 		value = value.split(':');
 
 		// Remove all non digits and whitespace
-		this.hours = (value[0] + '').replace(/[\D\s]/g, '');
+		this.hours = (value[0] + '').replace(/[\s]/g, '');
 		this.minutes = (value[1] + '').replace(/[\D\s]/g, '');
 		this.hoursBlank = !this.hours;
 		this.minutesBlank = !this.minutes;
