@@ -10,7 +10,7 @@
   "homepage": "http://weareoutman.github.io/clockpicker/",
   "repository": {
     "type": "git",
-    "url": "git://github.com/weareoutman/clockpicker.git"
+    "url": "git://github.com/Yolean/clockpicker.git"
   },
   "scripts": {
     "test": "./node_modules/.bin/gulp test"
