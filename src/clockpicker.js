@@ -393,6 +393,8 @@
 				if (self.currentView === 'hours') {
 					if (self.options.toggleMode !== 'never') {
 						self.toggleView('minutes', duration / 2);
+					} else {
+						raiseCallback(self.options.afterHourSelect);
 					}
 				} else {
 					if (options.twelveHour && !self.amOrPmSelected && options.autoClose) {
