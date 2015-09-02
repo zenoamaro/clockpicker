@@ -32,6 +32,10 @@
 			'OTransition' in style;
 	})();
 
+	// FIXME(alindgren) Corresponds to the css height and width for .clockpicker-tick
+	// as I can't seem to figure out how to get the actual width through code
+	var TICK_SIZE = 26;
+
 	/**
 	 * Get the width of the browser’s scrollbar.
 	 * Taken from: https://github.com/VodkaBears/Remodal/blob/master/src/jquery.remodal.js
@@ -76,7 +80,7 @@
 	}
 
 	function leadingZero(num) {
-		return (num < 10 ? '0' : '') + num;
+		return '' + num;
 	}
 
 	// Get a unique id
@@ -269,6 +273,17 @@
 
 		// Hours view
 		if (options.twelveHour) {
+			// Add 0 in the middle of the clock
+			tick = tickTpl.clone();
+			tick.css('font-size', '120%');
+			tick.css({
+				left: dialRadius - (TICK_SIZE / 2),
+				top: dialRadius
+			});
+			tick.html(0);
+			hoursView.append(tick);
+			tick.on(mousedownEvent, mousedown);
+
 			for (i = 0; i < 12; i += options.hourStep) {
 				tick = tickTpl.clone();
 				radian = i / 6 * Math.PI;
@@ -376,7 +391,9 @@
 					y = (isTouch ? e.originalEvent.changedTouches[0] : e).pageY - y0;
 				self.setHand(x, y, false, true);
 				if (self.currentView === 'hours') {
-					self.toggleView('minutes', duration / 2);
+					if (self.options.toggleMode !== 'never') {
+						self.toggleView('minutes', duration / 2);
+					}
 				} else {
 					if (options.twelveHour && !self.amOrPmSelected && options.autoClose) {
 						self.toggleView('ampm', duration / 2);
@@ -516,6 +533,7 @@
 		blankTitle: '',		// text to show in the title when hours/minutes are both blank
 		preventScroll:false,// prevent scrolling while popup is open
 		preventClose: false,// prevent close when clicking/focusing outside popup
+		toggleMode: 'auto', // set to 'never' to block automatic toggle from hours -- incomplete impl
 		inline: false,		// show the clockpicker inline (show/hide does nothing)
 		container: null,	// container to insert the clockpicker within (inserts into clockpicker element if inline, inserts into document.body if null)
 		offset: null,		// container offset (object with top/left properties) to use to show the popover (if null, uses element.offset())
@@ -643,7 +661,7 @@
 		value = value.split(':');
 
 		// Remove all non digits and whitespace
-		this.hours = (value[0] + '').replace(/[\D\s]/g, '');
+		this.hours = (value[0] + '').replace(/[\s]/g, '');
 		this.minutes = (value[1] + '').replace(/[\D\s]/g, '');
 		this.hoursBlank = !this.hours;
 		this.minutesBlank = !this.minutes;
@@ -815,14 +833,27 @@
 			return;
 		}
 		var view = this.currentView,
-			value = this[view],
 			isHours = view === 'hours',
+			value = isHours ? this.hours + (this.minutes / 60) : this.minutes,
+			isZero = isHours && value === 0,
 			unit = Math.PI / (isHours ? 6 : 30),
-			radian = value * unit,
-			radius = isHours && value > 0 && value < 13 ? innerRadius : outerRadius,
-			x = Math.sin(radian) * radius,
-			y = - Math.cos(radian) * radius,
-			self = this;
+			radian = value * unit;
+
+		var radius;
+		if (isHours && isZero) {
+			radius = TICK_SIZE / 2;
+			radian = Math.PI * 3;
+		} else if (isHours && value > 0 && value < 13) {
+			radius = innerRadius;
+		} else {
+			radius = outerRadius;
+		}
+
+		var x = Math.sin(radian) * radius;
+		var y = - Math.cos(radian) * radius;
+
+		var self = this;
+
 		if (svgSupported && delay) {
 			self.canvas.addClass('clockpicker-canvas-out');
 			setTimeout(function(){
@@ -848,6 +879,10 @@
 			unit,
 			value;
 
+
+		// Support a zero value in the middle of the clock
+		var isZero = z < TICK_SIZE;
+
 		// Calculate the unit
 		if (isHours) {
 			unit = options.hourStep / 6 * Math.PI;
@@ -865,10 +900,14 @@
 		}
 
 		// Get the round value
-		value = Math.round(radian / unit);
+		if (isZero) value = 0;
+		else value = Math.round(radian / unit);
+
+		if (isZero) radius = TICK_SIZE / 2;
 
 		// Get the round radian
-		radian = value * unit;
+		if (isZero) radian = Math.PI * 3;
+		else radian = value * unit;
 
 		// Correct the hours or minutes
 		if (isHours) {
@@ -877,7 +916,7 @@
 			if (! options.twelveHour && (!inner)==(value>0)) {
 				value += 12;
 			}
-			if (options.twelveHour && value === 0) {
+			if (options.twelveHour && value === 0 && !isZero) {
 				value = 12;
 			}
 			if (value === 24) {
