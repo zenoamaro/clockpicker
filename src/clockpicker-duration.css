@@ -8,3 +8,9 @@
 .clockpicker-am-pm-block {
   display: none;
 }
+
+.clockpicker-popover .popover-title,
+.clockpicker-popover .popover-footer,
+{
+  display: none;
+}
