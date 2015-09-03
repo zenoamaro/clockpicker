@@ -1,7 +1,7 @@
 {
   "name": "clockpicker-duration",
   "description": "A clock-style timepicker for Bootstrap (or jQuery)",
-  "version": "0.5.7",
+  "version": "0.5.8",
   "author": {
     "name": "Wang Shenwei",
     "email": "wangshenwei@qq.com",
