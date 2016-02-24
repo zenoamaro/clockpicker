@@ -1107,7 +1107,8 @@
 	};
 
 	ClockPicker.prototype.autoCloseIfEnabled = function() {
-		var anyBlank = this.minutesBlank || this.hoursBlank;
+		var anyBlank = this.minutes == null || this.minutes === ''
+		            || this.hours == null || this.hours === '';
 		if (this.options.autoClose && !anyBlank) {
 			var self = this;
 			this.minutesView.addClass('clockpicker-dial-out');
